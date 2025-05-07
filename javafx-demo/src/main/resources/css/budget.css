@@ -1,0 +1,26 @@
+.root { -fx-font-size: 14px; }
+
+.grid-bg {
+    -fx-background-color: transparent;
+    -fx-background-image:
+        linear-gradient(#e5e5e5 1px, transparent 1px),
+        linear-gradient(90deg, #e5e5e5 1px, transparent 1px);
+    -fx-background-size: 20px 20px;
+}
+
+
+
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-font-size: 13px;
+    -fx-padding: 2 8 2 8;
+}
+
+.header {
+    -fx-font-weight: bold;
+    -fx-background-color: #6D7278;
+    -fx-padding: 2 0 2 4;
+}

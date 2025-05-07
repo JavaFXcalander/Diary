@@ -1,0 +1,49 @@
+/* General background and font */
+.root {
+    -fx-background-color: #f4f5f0;
+    -fx-font-family: 'Segoe UI', 'Arial', sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* Section titles */
+.label {
+    -fx-font-family: "Times New Roman"; 
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-text-fill: #888;
+    -fx-padding: 4 4 4 4;
+}
+
+/* Text fields and areas */
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-padding: 4 8 4 8;
+}
+
+.text-area {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-highlight-fill: transparent;
+    -fx-highlight-text-fill: #888;
+
+}
+
+
+
+.button {
+    -fx-padding: 2 0 2 0;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Section backgrounds (optional) */
+.text-field, .check-box, .label {
+    -fx-background-insets: 0;
+}
+
