@@ -1,0 +1,35 @@
+.grid-bg {
+    -fx-background-color: transparent;
+}
+
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-family: "Times New Roman"; 
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 4;
+}
+
+.text-field:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: #cccccc;
+    -fx-padding: 4;
+}
+
+.check-box {
+    -fx-padding: 4;
+    -fx-font-size: 14px;
+}
+
+/* 改方框大小、邊框顏色、圓角 */
+.check-box .box {
+    -fx-pref-width: 15px;
+    -fx-pref-height: 15px;
+    -fx-border-color: #666;
+    -fx-border-width: 0.8;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+}
+

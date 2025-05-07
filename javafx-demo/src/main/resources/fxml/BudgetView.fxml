@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" 
+      stylesheets="@../css/budget.css">
+                <Label text="Budget 記帳"/>
+
+                <GridPane style="-fx-border-color: #cccccc; -fx-border-width: 0.5px;">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="75" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="25"/>
+                    </columnConstraints>
+
+                    
+
+                    <!-- 左：細項 + 動態行 (預留 listBox 容器) -->
+                    <VBox  GridPane.columnIndex="0" prefWidth="211">
+                        <Label text="Details 細項"/>
+                        <VBox fx:id="listBox"
+                            style="-fx-border-color:#cccccc;-fx-border-width:0.5;" prefHeight="300">
+                            <!-- 程式啟動時會自動塞第一行，這裡保持空即可 -->
+                        </VBox>
+                        <VBox style="-fx-border-color:#cccccc;-fx-border-width:0.5;" prefWidth="211" >
+                            <Label text="Income 收入"/>
+                        </VBox>
+                        <VBox style="-fx-border-color:#cccccc;-fx-border-width:0.5;" prefWidth="211" >
+                            <Label text="Expenses 支出"/>
+                        </VBox>
+                        <VBox style="-fx-border-color:#cccccc;-fx-border-width:0.5;" prefWidth="211" >
+                            <Label text="Balance 餘額"/>
+                        </VBox>
+                    </VBox>
+
+                    <!-- 右：金額 + 統計欄 -->
+                    <VBox GridPane.columnIndex="1" prefWidth="70"
+                    style="-fx-border-color:#cccccc;-fx-border-width:0.5;">
+                        <VBox style="-fx-border-color:#cccccc;-fx-border-width:0.5;" prefWidth="70" >
+                            <Label text="I/E 收支"/>
+                        </VBox>
+
+                            <!-- 第一行的金額 TextField (由程式加入) -->
+                            <VBox fx:id="ieColumn" prefHeight="300"/>  <!-- 另一個容器，跟 listBox 一一對應 -->
+
+                            <!-- 統計欄：直接放三個 label / textField -->
+                        <VBox style="-fx-border-color:#cccccc;-fx-border-width:0.5;" prefWidth="70" >
+                            <TextField fx:id="incomeField"/>
+                        </VBox>
+                        <VBox style="-fx-border-color:#cccccc;-fx-border-width:0.5;" prefWidth="70" >
+                            <TextField fx:id="expensesField"/>
+                        </VBox>
+                        <VBox style="-fx-border-color:#cccccc;-fx-border-width:0.5;" prefWidth="70" >
+                            <TextField fx:id="balanceField"/>
+                        </VBox>
+                    </VBox>
+                </GridPane>
+</VBox>
