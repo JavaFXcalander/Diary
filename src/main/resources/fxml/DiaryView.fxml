@@ -79,7 +79,14 @@
             </GridPane>
 
             <!-- 左3 -->
-            <fx:include source="TodoView.fxml" GridPane.rowIndex="2" prefHeight="562.5"/>
+            <GridPane GridPane.rowIndex="2" prefHeight="562.5">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="40" hgrow="ALWAYS"/>
+                    <ColumnConstraints percentWidth="60" hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <fx:include source="TodoView.fxml"  GridPane.columnIndex="1" prefHeight="562.5" prefWidth="212.4"/>
+            </GridPane>
         </GridPane>
 
         <!-- 中 -->

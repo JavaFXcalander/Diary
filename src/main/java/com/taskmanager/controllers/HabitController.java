@@ -10,7 +10,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class HabitController {
-    private static final int INIT_ROWS = 5;
     private static final double PADDING = 4;
 
     @FXML
@@ -21,7 +20,7 @@ public class HabitController {
         habitTracker.setPadding(new Insets(PADDING));
         
         // Create initial rows
-        for (int i = 0; i < INIT_ROWS; i++) {
+        for (int i = 0; i < 4; i++) {
             habitTracker.getChildren().add(createRow());
         }
     }

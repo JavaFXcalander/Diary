@@ -29,12 +29,43 @@
     -fx-background-insets: 0;
     -fx-background-radius: 0;
     -fx-border-color: transparent;
-    -fx-highlight-fill: transparent;
-    -fx-highlight-text-fill: #888;
-
+    -fx-text-fill: #888;
+    -fx-focus-color: transparent; 
+    -fx-faint-focus-color: transparent;
+    -fx-font-family: "Times New Roman"; 
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
 }
 
+.text-area .viewport {
+    -fx-background-color: transparent;
+}
 
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+}
+
+.text-area:focused .content {
+    -fx-background-color: transparent;
+}
+
+.text-area:focused {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
 
 .button {
     -fx-padding: 2 0 2 0;
@@ -42,10 +73,6 @@
     -fx-border-color: transparent;
 }
 
-/* Section backgrounds (optional) */
-.text-field, .check-box, .label {
-    -fx-background-insets: 0;
-}
 
 /* 功能按鈕樣式 */
 .Diary-button {
