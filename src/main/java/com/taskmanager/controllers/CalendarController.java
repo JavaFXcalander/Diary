@@ -212,8 +212,24 @@ public class CalendarController {
     }
     
     private void handleDateClick(LocalDate date) {
-        // 處理日期點擊事件，可以在這裡添加彈出窗口來新增/編輯事件
-        System.out.println("Clicked date: " + date);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DiaryView.fxml"));
+            Parent diaryRoot = loader.load();
+            
+            // 獲取 DiaryController 並設置選中的日期
+            DiaryController diaryController = loader.getController();
+            if (diaryController != null) {
+                // 假設 DiaryController 有一個設置日期的方法
+                diaryController.setSelectedDate(date);
+            }
+            
+            // 切換場景
+            Scene scene = calendarGrid.getScene();
+            scene.setRoot(diaryRoot);
+        } catch (IOException e) {
+            System.err.println("無法載入日記視圖: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML

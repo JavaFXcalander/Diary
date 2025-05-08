@@ -57,6 +57,21 @@ public class DiaryController {
         scene.setRoot(diaryRoot);
     }
 
-
+    public void setSelectedDate(LocalDate date) {
+        // 格式化並顯示選擇的日期
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy / MM / dd - EEEE", Locale.ENGLISH);
+        String formattedDate = date.format(formatter);
+        dateLabel.setText(formattedDate);
+        dateLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: normal;");
+        dateLabel.setPadding(Insets.EMPTY);
+        
+        // 你可以在這裡加載該日期的日記內容
+        loadDiaryContent(date);
+    }
+    
+    private void loadDiaryContent(LocalDate date) {
+        // TODO: 從數據存儲中加載選定日期的日記內容
+        // 這裡可以添加加載待辦事項、預算、習慣等數據的邏輯
+    }
     
 }
