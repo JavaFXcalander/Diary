@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.paint.Color?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="com.gamified.taskmanager.controllers.CalendarController"
+            stylesheets="@../css/styles.css">
+    
+    <!-- Top: Title and Navigation -->
+    <top>
+        <VBox spacing="10" alignment="CENTER">
+            <padding>
+                <Insets top="15" right="10" bottom="10" left="10" />
+            </padding>
+            <Label text="Calendar" styleClass="title-label" />
+            <HBox spacing="40" alignment="CENTER">
+                <Button fx:id="previousButton" text="Previous" styleClass="nav-button" />
+                <Label fx:id="monthYearLabel" text="May 2025" styleClass="month-year-label" />
+                <Button fx:id="nextButton" text="Next" styleClass="nav-button" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Center: Calendar Grid -->
+    <center>
+        <VBox spacing="5">
+            <!-- Calendar Grid -->
+            <GridPane fx:id="calendarGrid" hgap="5" vgap="5" styleClass="calendar-grid">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10" />
+                </padding>
+                <!-- Java 會用程式填滿這個 GridPane -->
+            </GridPane>
+        </VBox>
+    </center>
+
+    <!-- Bottom: Navigation and Footer -->
+    <bottom>
+        <VBox spacing="5">
+            <HBox spacing="15" alignment="CENTER">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10" />
+                </padding>
+                <Button text="Diary" styleClass="Diary-button" onAction="#handleDiaryButton"/>
+                <Button text="Month" styleClass="Month-button"/>
+                <Button text="Project" styleClass="Project-button" onAction="#handleProjectButton"/>
+            </HBox>
+            <HBox spacing="5" alignment="CENTER">
+                <padding>
+                    <Insets bottom="10" />
+                </padding>
+                <Label text="1" styleClass="number-label" />
+                <Label text="2" styleClass="number-label" />
+                <Label text="3" styleClass="number-label" />
+                <Label text="4" styleClass="number-label" />
+                <Label text="5" styleClass="number-label" />
+                <Label text="6" styleClass="number-label" />
+                <Label text="7" styleClass="number-label" />
+                <Label text="8" styleClass="number-label" />
+                <Label text="9" styleClass="number-label" />
+                <Label text="10" styleClass="number-label" />
+                <Label text="11" styleClass="number-label" />
+                <Label text="12" styleClass="number-label" />
+            </HBox>
+        </VBox>
+    </bottom>
+
+</BorderPane>

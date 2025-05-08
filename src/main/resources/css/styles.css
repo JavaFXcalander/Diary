@@ -1,0 +1,125 @@
+/* 通用樣式 */
+.root {
+    -fx-background-color: #f4f5f0;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+/* 標題樣式 */
+.title-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #888;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+.month-year-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #888;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+/* 導航按鈕樣式 */
+.nav-button {
+    -fx-background-color: #628fb5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 7 14;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+    -fx-font-family: "Times New Roman", serif;
+}
+
+.nav-button:hover {
+    -fx-background-color: #4a7da8;
+}
+
+.nav-button:pressed {
+    -fx-background-color: #3a6d98;
+    -fx-translate-y: 1px;
+}
+
+/* 功能按鈕樣式 */
+.Diary-button {
+    -fx-background-color: #d6ccc2;
+    -fx-text-fill: #888;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8 16;
+    -fx-border-color: #d6ccc2;
+    -fx-border-radius: 5;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+.Month-button {
+    -fx-background-color: #f5ebe0;
+    -fx-text-fill: #888;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8 16;
+    -fx-border-color: #f5ebe0;
+    -fx-border-radius: 5;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+.Project-button {
+    -fx-background-color: #e3d5ca;
+    -fx-text-fill: #888;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8 16;
+    -fx-border-color: #e3d5ca;
+    -fx-border-radius: 5;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+
+
+/* 日曆網格樣式 */
+.calendar-grid {
+    -fx-border-color: #444444;
+    -fx-border-width: 1;
+}
+
+.calendar-cell {
+    -fx-border-color: lightgray;
+}
+
+/* 滑鼠懸停樣式 */
+.calendar-cell:hover {
+    -fx-background-color: rgba(200, 220, 240, 0.3);
+}
+
+/* 今日日期樣式 */
+.today-cell {
+    -fx-background-color: #ede8dd;
+}
+
+.today-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #93908a;
+    -fx-padding: 5 8 0 8;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+/* 一般日期標籤樣式 */
+.date-label {
+    -fx-font-size: 16px;
+    -fx-padding: 5 8 0 8;
+    -fx-text-fill: #888;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+/* 星期標題樣式 */
+.day-header {
+    -fx-text-fill: #888;
+    -fx-font-weight: bold;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+/* 數字標籤樣式 */
+.number-label {
+    -fx-text-fill: #888;
+    -fx-font-family: "Times New Roman", serif;
+}
