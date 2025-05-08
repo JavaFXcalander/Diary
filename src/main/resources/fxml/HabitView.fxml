@@ -5,7 +5,7 @@
 <?import javafx.geometry.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" 
-      fx:controller="com.gamified.taskmanager.controllers.HabitController"
+      fx:controller="com.taskmanager.controllers.HabitController"
       stylesheets="@../css/todo.css">
     <Label text="Habit Tracker 習慣追蹤"/>
     <VBox fx:id="habitTracker" spacing="4" styleClass="grid-bg">
