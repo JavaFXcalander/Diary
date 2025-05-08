@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" prefWidth="1024" prefHeight="768">
+    <VBox spacing="10" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <Label text="2025 April Project" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+        <!-- Projects -->
+        <GridPane hgap="20" vgap="20" GridPane.vgrow="ALWAYS">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="ALWAYS"/>
+                <RowConstraints vgrow="ALWAYS"/>
+            </rowConstraints>
+
+            <!-- Project 1 -->
+           <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="60"/>
+                    <ColumnConstraints percentWidth="40"/>
+                </columnConstraints>
+
+                <!-- Row 0: Project Name -->
+                <TextField promptText="project1" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0"/>
+
+                <!-- Row 1: ProgressBar - 高度加大到30 -->
+                <ProgressBar fx:id="progressBar" prefWidth="600" prefHeight="40" style="-fx-accent: #4CAF50; -fx-pref-height: 10px; -fx-min-height: 10px; -fx-max-height: 10px;" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
+                <!-- Row 2: Start / End & Checklist Title -->
+                <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <TextField promptText="Start Date" prefWidth="200"/>
+                    <TextField promptText="End Date" prefWidth="200"/>
+                </HBox>
+                <Label text="Check List" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <!-- Row 3: About & Checklist Items -->
+                <TextArea promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                </VBox>
+            </GridPane>
+
+
+            <!-- Project 2 -->
+            <GridPane hgap="10" vgap="10" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="60"/>
+                    <ColumnConstraints percentWidth="40"/>
+                </columnConstraints>
+
+                <!-- Row 0: Project Name -->
+                <TextField promptText="project2" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0"/>
+
+                <!-- Row 1: ProgressBar - 高度加大到30 -->
+                <ProgressBar fx:id="progressBar" prefWidth="600" prefHeight="40" style="-fx-accent: #4CAF50;" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
+
+                <!-- Row 2: Start / End & Checklist Title -->
+                <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <TextField promptText="Start Date" prefWidth="200"/>
+                    <TextField promptText="End Date" prefWidth="200"/>
+                </HBox>
+                <Label text="Check List" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <!-- Row 3: About & Checklist Items -->
+                <TextArea promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                </VBox>
+            </GridPane>
+
+
+            <!-- Project 3 -->
+            <GridPane hgap="10" vgap="10" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="60"/>
+                    <ColumnConstraints percentWidth="40"/>
+                </columnConstraints>
+
+                <!-- Row 0: Project Name -->
+                <TextField promptText="project3" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0"/>
+
+                <!-- Row 1: ProgressBar - 高度加大到30 -->
+                <ProgressBar fx:id="progressBar" prefWidth="600" prefHeight="40" style="-fx-accent: #4CAF50; -fx-pref-height: 10px; -fx-min-height: 10px; -fx-max-height: 10px;" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
+                <!-- Row 2: Start / End & Checklist Title -->
+                <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <TextField promptText="Start Date" prefWidth="200"/>
+                    <TextField promptText="End Date" prefWidth="200"/>
+                </HBox>
+                <Label text="Check List" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <!-- Row 3: About & Checklist Items -->
+                <TextArea promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                </VBox>
+            </GridPane>
+
+
+            <!-- Project 4 -->
+            <GridPane hgap="10" vgap="10" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="60"/>
+                    <ColumnConstraints percentWidth="40"/>
+                </columnConstraints>
+
+                <!-- Row 0: Project Name -->
+                <TextField promptText="project4" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0"/>
+
+                <!-- Row 1: ProgressBar - 高度加大到30 -->
+                <ProgressBar fx:id="progressBar" prefWidth="600" prefHeight="40" style="-fx-accent: #4CAF50;" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
+
+                <!-- Row 2: Start / End & Checklist Title -->
+                <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <TextField promptText="Start Date" prefWidth="200"/>
+                    <TextField promptText="End Date" prefWidth="200"/>
+                </HBox>
+                <Label text="Check List" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <!-- Row 3: About & Checklist Items -->
+                <TextArea promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                    <HBox spacing="5"><CheckBox/><TextField promptText="task" prefWidth="200"/></HBox>
+                </VBox>
+            </GridPane>
+
+        </GridPane>
+
+        <!-- Grid Section -->
+        <VBox spacing="5">
+            <!-- <GridPane hgap="2" vgap="2">
+                Day Numbers -->
+                <HBox spacing="5">
+                    <VBox spacing="0">
+                        <Label text="Project / date                      "/>
+                        <Region prefHeight="9"/>
+                        <TextField promptText="project1" prefWidth="40" prefHeight="8"/>
+                        <Region prefHeight="7"/>
+                        <TextField promptText="project2" prefWidth="40" prefHeight="8"/>
+                        <Region prefHeight="7"/>
+                        <TextField promptText="project3" prefWidth="40" prefHeight="8"/>
+                        <Region prefHeight="7"/>
+                        <TextField promptText="project4" prefWidth="40" prefHeight="8"/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text=" 1"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text=" 2"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text=" 3"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text=" 4"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text=" 5"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text=" 6"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text=" 7"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text=" 8"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text=" 9"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="10"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="11"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="12"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="13"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="14"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="15"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="16"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="17"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="18"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="19"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="20"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="21"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="22"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="23"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="24"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="25"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="26"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="27"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="28"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="29"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="30"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                    <VBox spacing="13">
+                        <Label text="31"/> 
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                        <CheckBox/>
+                    </VBox>
+                
+                </HBox>
+            <!-- </GridPane> -->
+
+
+        </VBox>
+    </VBox>
+</AnchorPane>

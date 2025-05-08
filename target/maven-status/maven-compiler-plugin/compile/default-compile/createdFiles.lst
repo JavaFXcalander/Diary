@@ -1,0 +1,13 @@
+com/gamified/taskmanager/models/PlayerStats.class
+com/gamified/taskmanager/models/MealEntry.class
+com/gamified/taskmanager/controllers/TodoController.class
+com/gamified/taskmanager/models/HabitEntry.class
+com/gamified/taskmanager/controllers/DiaryController.class
+com/gamified/taskmanager/models/DiaryEntry.class
+com/gamified/taskmanager/models/TodoItem.class
+com/gamified/taskmanager/controllers/CalendarController.class
+com/gamified/taskmanager/MainApp.class
+com/gamified/taskmanager/models/Task.class
+com/gamified/taskmanager/controllers/BudgetController.class
+com/gamified/taskmanager/models/BudgetItem.class
+com/gamified/taskmanager/controllers/HabitController.class
