@@ -27,6 +27,28 @@ public class TodoController {
         }
     }
 
+    public String serializeTodoList() {
+        StringBuilder sb = new StringBuilder();
+        
+        for (int i = 0; i < todoList.getChildren().size(); i++) {
+            HBox row = (HBox) todoList.getChildren().get(i);
+            CheckBox cb = (CheckBox) row.getChildren().get(0);
+            TextField tf = (TextField) row.getChildren().get(1);
+            
+            // Skip empty todos
+            if (tf.getText().trim().isEmpty()) continue;
+            
+            // Format: completed,text|completed,text|...
+            sb.append(cb.isSelected() ? "1" : "0")
+              .append(",")
+              .append(tf.getText().replace(",", "\\,").replace("|", "\\|"))
+              .append("|");
+        }
+        
+        return sb.toString();
+    }
+
+
     private HBox createRow() {
         CheckBox cb = new CheckBox();
         TextField tf = new TextField();
@@ -49,5 +71,41 @@ public class TodoController {
         HBox row = new HBox(6, cb, tf);
         row.setAlignment(Pos.CENTER_LEFT);
         return row;
+    }
+
+    public void loadTodoList(String todoData) {
+        // Clear existing todos
+        todoList.getChildren().clear();
+        
+        if (todoData == null || todoData.isEmpty()) {
+            // Add default empty rows
+            for (int i = 0; i < INIT_ROWS; i++) {
+                todoList.getChildren().add(createRow());
+            }
+            return;
+        }
+        
+        String[] todos = todoData.split("\\|");
+        for (String todo : todos) {
+            if (todo.isEmpty()) continue;
+            
+            String[] parts = todo.split(",", 2);
+            if (parts.length < 2) continue;
+            
+            boolean completed = "1".equals(parts[0]);
+            String text = parts[1].replace("\\,", ",").replace("\\|", "|");
+            
+            HBox row = createRow();
+            CheckBox cb = (CheckBox) row.getChildren().get(0);
+            TextField tf = (TextField) row.getChildren().get(1);
+            
+            cb.setSelected(completed);
+            tf.setText(text);
+            
+            todoList.getChildren().add(row);
+        }
+        
+        // Ensure we have at least one empty row at the end
+        todoList.getChildren().add(createRow());
     }
 } 
