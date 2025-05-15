@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class DiaryDatabase {
+    // ORMLite
     private static final String DATABASE_URL = "jdbc:h2:./diary_db;AUTO_SERVER=TRUE";
     private static DiaryDatabase instance;
     private ConnectionSource connectionSource;
@@ -81,6 +82,9 @@ public class DiaryDatabase {
             throw new RuntimeException("Failed to get diary entry", e);
         }
     }
+
+    
+
 
     
     // 專案相關操作
