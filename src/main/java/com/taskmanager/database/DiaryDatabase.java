@@ -48,11 +48,11 @@ public class DiaryDatabase {
     // 日記相關操作
     public void saveDiaryEntry(DiaryModel entry) {
         try {
-            // 檢查當天是否已有日記
-            List<DiaryModel> existingEntries = diaryDao.queryForEq("date", entry.getDate());
-            if (!existingEntries.isEmpty()) {
+            // 檢查當天是否已有日記 - can't use queryForEq with serialized fields
+            DiaryModel existingEntry = getDiaryEntry(entry.getDate());
+            
+            if (existingEntry != null) {
                 // 如果存在，更新現有的日記
-                DiaryModel existingEntry = existingEntries.get(0);
                 existingEntry.setDDay(entry.getDDay());
                 existingEntry.setPriority(entry.getPriority());
                 existingEntry.setRoutine(entry.getRoutine());
@@ -76,8 +76,20 @@ public class DiaryDatabase {
 
     public DiaryModel getDiaryEntry(LocalDate date) {
         try {
-            List<DiaryModel> entries = diaryDao.queryForEq("date", date);
-            return entries.isEmpty() ? null : entries.get(0);
+            // Since we can't query directly on serialized fields, we need to retrieve all entries
+            // and filter them in memory
+            List<DiaryModel> allEntries = diaryDao.queryForAll();
+            
+            // Filter entries by date manually
+            for (DiaryModel entry : allEntries) {
+                LocalDate entryDate = entry.getDate();
+                if (entryDate != null && entryDate.equals(date)) {
+                    return entry;
+                }
+            }
+            
+            // No matching entry found
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException("Failed to get diary entry", e);
         }
@@ -101,12 +113,25 @@ public class DiaryDatabase {
             LocalDate startOfMonth = date.withDayOfMonth(1);
             LocalDate endOfMonth = startOfMonth.plusMonths(1).minusDays(1);
             
-            return projectDao.queryBuilder()
-                    .where()
-                    .ge("startDate", startOfMonth)
-                    .and()
-                    .le("endDate", endOfMonth)
-                    .query();
+            // Get all projects and filter in memory since we can't query on serialized fields
+            List<ProjectModel> allProjects = projectDao.queryForAll();
+            List<ProjectModel> monthlyProjects = new java.util.ArrayList<>();
+            
+            for (ProjectModel project : allProjects) {
+                LocalDate projectStart = project.getStartDate();
+                LocalDate projectEnd = project.getEndDate();
+                
+                // Include project if it overlaps with the month
+                if (projectStart != null && projectEnd != null) {
+                    // Project starts before or during the month AND ends during or after the month
+                    if ((projectStart.isBefore(endOfMonth) || projectStart.isEqual(endOfMonth)) && 
+                        (projectEnd.isAfter(startOfMonth) || projectEnd.isEqual(startOfMonth))) {
+                        monthlyProjects.add(project);
+                    }
+                }
+            }
+            
+            return monthlyProjects;
         } catch (SQLException e) {
             throw new RuntimeException("Failed to get monthly projects", e);
         }
