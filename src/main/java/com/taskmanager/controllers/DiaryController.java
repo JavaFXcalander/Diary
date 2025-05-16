@@ -8,8 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import com.taskmanager.database.DiaryDatabase;
 import com.taskmanager.models.DiaryModel;
 
@@ -23,6 +23,7 @@ public class DiaryController {
     @FXML private Label dateLabel;
     @FXML private TextField dDayField, priorityField, routineField;
     @FXML private TextField breakfastField, lunchField, dinnerField, snackField;
+    @FXML private TextArea anynotesArea;
     
     private LocalDate currentDate = LocalDate.now();
     private DiaryDatabase database = DiaryDatabase.getInstance();
@@ -82,6 +83,12 @@ public class DiaryController {
                 saveDiaryEntry();
             }
         });
+        
+        anynotesArea.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) {
+                saveDiaryEntry();
+            }
+        });
     }
     
     private void saveDiaryEntry() {
@@ -94,6 +101,7 @@ public class DiaryController {
         entry.setLunch(lunchField.getText());
         entry.setDinner(dinnerField.getText());
         entry.setSnack(snackField.getText());
+        entry.setAnynotes(anynotesArea.getText());
         
         // 保存到數據庫
         database.saveDiaryEntry(entry);
@@ -162,6 +170,7 @@ public class DiaryController {
             lunchField.setText(entry.getLunch() != null ? entry.getLunch() : "");
             dinnerField.setText(entry.getDinner() != null ? entry.getDinner() : "");
             snackField.setText(entry.getSnack() != null ? entry.getSnack() : "");
+            anynotesArea.setText(entry.getAnynotes() != null ? entry.getAnynotes() : "");
         } else {
             // 如果沒有找到該日期的條目，清空所有欄位
             dDayField.clear();
@@ -171,6 +180,7 @@ public class DiaryController {
             lunchField.clear();
             dinnerField.clear();
             snackField.clear();
+            anynotesArea.clear();
         }
     }
     

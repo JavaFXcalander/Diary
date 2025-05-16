@@ -1,6 +1,7 @@
 package com.taskmanager.models;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ public class DiaryModel {
     @DatabaseField(generatedId = true)
     private int id;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.SERIALIZABLE)
     private LocalDate date;
 
     @DatabaseField

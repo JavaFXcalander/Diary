@@ -1,6 +1,7 @@
 package com.taskmanager.models;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.time.LocalDate;
@@ -16,10 +17,10 @@ public class ProjectModel {
     @DatabaseField
     private String description;
 
-    @DatabaseField
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private LocalDate startDate;
 
-    @DatabaseField
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private LocalDate endDate;
 
     @DatabaseField
