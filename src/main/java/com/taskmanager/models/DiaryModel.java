@@ -28,7 +28,8 @@ public class DiaryModel {
 
     @DatabaseField
     private String todo;
-
+    
+   
     @DatabaseField
     private String photoCollage;
 
@@ -104,6 +105,8 @@ public class DiaryModel {
     public void setTodo(String todo) {
         this.todo = todo;
     }
+    
+    
     
     public String getBudget() {
         return budget;

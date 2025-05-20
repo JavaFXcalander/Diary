@@ -51,30 +51,34 @@ public class ProjectController {
     @FXML
     public void initialize() {
         // 取得 checklistVBox 裡的每個 HBox 項目
-        for (var node : checklistVBox.getChildren()) {
-            if (node instanceof HBox) {
-                HBox hbox = (HBox) node;
-                if (hbox.getChildren().size() >= 2) {
-                    var first = hbox.getChildren().get(0);
-                    var second = hbox.getChildren().get(1);
-                    if (first instanceof CheckBox && second instanceof TextField) {
-                        CheckBox cb = (CheckBox) first;
-                        TextField tf = (TextField) second;
-                        ChecklistItem item = new ChecklistItem(cb, tf);
-                        checklistItems.add(item);
-                        // 當勾選狀態改變時更新進度
-                        cb.selectedProperty().addListener((obs, oldVal, newVal) -> updateProgress());
-                        // 當文字改變時更新進度
-                        tf.textProperty().addListener((obs, oldVal, newVal) -> updateProgress());
+        if (checklistVBox != null) {
+            for (var node : checklistVBox.getChildren()) {
+                if (node instanceof HBox) {
+                    HBox hbox = (HBox) node;
+                    if (hbox.getChildren().size() >= 2) {
+                        var first = hbox.getChildren().get(0);
+                        var second = hbox.getChildren().get(1);
+                        if (first instanceof CheckBox && second instanceof TextField) {
+                            CheckBox cb = (CheckBox) first;
+                            TextField tf = (TextField) second;
+                            ChecklistItem item = new ChecklistItem(cb, tf);
+                            checklistItems.add(item);
+                            // 當勾選狀態改變時更新進度
+                            cb.selectedProperty().addListener((obs, oldVal, newVal) -> updateProgress());
+                            // 當文字改變時更新進度
+                            tf.textProperty().addListener((obs, oldVal, newVal) -> updateProgress());
+                        }
                     }
                 }
             }
+            updateProgress();
         }
-        updateProgress();
     }
 
     // 根據有效（有填文字）的任務數及勾選項目數更新進度條
     private void updateProgress() {
+        if (progressBar == null) return;
+        
         int validTasks = 0;
         int checkedTasks = 0;
         for (ChecklistItem item : checklistItems) {

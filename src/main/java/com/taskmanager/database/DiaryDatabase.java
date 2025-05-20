@@ -29,11 +29,12 @@ public class DiaryDatabase {
             TableUtils.createTableIfNotExists(connectionSource, DiaryModel.class);
             TableUtils.createTableIfNotExists(connectionSource, ProjectModel.class);
             
+            
             // 初始化 DAO
             diaryDao = DaoManager.createDao(connectionSource, DiaryModel.class);
             projectDao = DaoManager.createDao(connectionSource, ProjectModel.class);
             
-        } catch (SQLException e) {
+       } catch (SQLException e) {
             throw new RuntimeException("Failed to initialize database", e);
         }
     }
@@ -63,6 +64,8 @@ public class DiaryDatabase {
                 existingEntry.setDinner(entry.getDinner());
                 existingEntry.setSnack(entry.getSnack());
                 existingEntry.setAnynotes(entry.getAnynotes());
+                existingEntry.setTodo(entry.getTodo());
+               
                 diaryDao.update(existingEntry);
             } else {
                 // 如果不存在，創建新的日記

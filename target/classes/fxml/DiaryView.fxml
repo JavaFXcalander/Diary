@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.layout.AnchorPane?>
+
 <!-- <?import javafx.scene.canvas.Canvas?> -->
 <!-- <?import javafx.scene.paint.Color?> -->
 
@@ -27,15 +28,11 @@
     <!-- 頂部區域 10% -->
     <VBox GridPane.rowIndex="0"  GridPane.columnIndex="1" alignment="BOTTOM_LEFT">
         <HBox alignment="BOTTOM_LEFT">
-            <!-- <Button text="&lt;" onAction="#showPreviousDate"/> -->
             <Label fx:id="dateLabel" styleClass="header-date"/>
-            <!-- <Button text="&gt;" onAction="#showNextDate"/> -->
         </HBox>
     </VBox>
 
     <!-- 中間 80% -->
-    <!-- <Canvas fx:id="canvas" width="1100" height="800" styleClass="grid-canvas"/> -->
-
     <GridPane  GridPane.rowIndex="1" GridPane.columnIndex="1" maxWidth="1080" alignment="CENTER" style="-fx-border-color: #cccccc; -fx-border-width: 0.5px;">
 
         <columnConstraints>
@@ -81,11 +78,15 @@
             <!-- 左3 -->
             <GridPane GridPane.rowIndex="2" prefHeight="562.5">
                 <columnConstraints>
-                    <ColumnConstraints percentWidth="40" hgrow="ALWAYS"/>
-                    <ColumnConstraints percentWidth="60" hgrow="ALWAYS"/>
+                    <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+                    <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
                 </columnConstraints>
 
-                <fx:include source="TodoView.fxml"  GridPane.columnIndex="1" prefHeight="562.5" prefWidth="212.4"/>
+
+
+                <fx:include fx:id="schedule" source="schedule.fxml"  GridPane.columnIndex="0" prefHeight="562.5" prefWidth="177"/>
+
+                <fx:include fx:id="todoContainer" source="TodoView.fxml"  GridPane.columnIndex="1" prefHeight="562.5" prefWidth="177"/>
             </GridPane>
         </GridPane>
 

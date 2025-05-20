@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import com.taskmanager.timeline.TimeAxisPane?>
+<?import javafx.scene.layout.GridPane?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.taskmanager.controllers.ScheduleController">
+  <TimeAxisPane fx:id="timeAxisPane"
+           prefWidth="177"
+           prefHeight="562.5"
+           GridPane.columnIndex="0"/>
+</GridPane>
