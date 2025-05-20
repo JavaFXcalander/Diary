@@ -16,6 +16,10 @@
 
 /* Text fields and areas */
 .text-field {
+    -fx-font-family: "Times New Roman"; 
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-text-fill: #888;
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-border-radius: 0px;
@@ -24,6 +28,10 @@
 }
 
 .text-area {
+    -fx-font-family: "Times New Roman"; 
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-text-fill: #888;
     -fx-background-color: transparent;
     -fx-control-inner-background: transparent;
     -fx-background-insets: 0;

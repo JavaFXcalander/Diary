@@ -13,9 +13,16 @@ import javafx.scene.layout.VBox;
 public class TodoController {
     private static final int INIT_ROWS = 5;
     private static final double PADDING = 4;
+    
+    private TodoChangeListener changeListener;
 
     @FXML
     private VBox todoList;
+    
+    // 設置變更監聽器
+    public void setChangeListener(TodoChangeListener listener) {
+        this.changeListener = listener;
+    }
 
     @FXML
     public void initialize() {
@@ -35,13 +42,13 @@ public class TodoController {
             CheckBox cb = (CheckBox) row.getChildren().get(0);
             TextField tf = (TextField) row.getChildren().get(1);
             
-            // Skip empty todos
-            if (tf.getText().trim().isEmpty()) continue;
+            // 保存所有行，包括空行
+            String text = tf.getText().trim();
             
             // Format: completed,text|completed,text|...
             sb.append(cb.isSelected() ? "1" : "0")
               .append(",")
-              .append(tf.getText().replace(",", "\\,").replace("|", "\\|"))
+              .append(text.replace(",", "\\,").replace("|", "\\|"))
               .append("|");
         }
         
@@ -55,6 +62,18 @@ public class TodoController {
         tf.setPromptText("Todo…");
         HBox.setHgrow(tf, Priority.ALWAYS);
 
+        // 添加失焦事件監聽器
+        tf.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) { // 當失去焦點時
+                notifyChange();
+            }
+        });
+        
+        // 添加CheckBox選擇變更監聽器
+        cb.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            notifyChange();
+        });
+
         // Add new row when Enter is pressed on the last row
         tf.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER &&
@@ -65,6 +84,7 @@ public class TodoController {
                     todoList.getChildren()
                             .get(todoList.getChildren().size()-1)
                             .requestFocus();
+                    notifyChange();
             }
         });
 
@@ -74,7 +94,7 @@ public class TodoController {
     }
 
     public void loadTodoList(String todoData) {
-        // Clear existing todos
+        // 完全清空现有todos
         todoList.getChildren().clear();
         
         if (todoData == null || todoData.isEmpty()) {
@@ -86,6 +106,8 @@ public class TodoController {
         }
         
         String[] todos = todoData.split("\\|");
+                
+        // 加载保存的行数据
         for (String todo : todos) {
             if (todo.isEmpty()) continue;
             
@@ -103,9 +125,19 @@ public class TodoController {
             tf.setText(text);
             
             todoList.getChildren().add(row);
+            
         }
         
-        // Ensure we have at least one empty row at the end
-        todoList.getChildren().add(createRow());
+        // 如果加载的行数少于INIT_ROWS，则添加空行直到达到INIT_ROWS
+        while (todoList.getChildren().size() < INIT_ROWS) {
+            todoList.getChildren().add(createRow());
+        }
+    }
+    
+    // 通知數據變更
+    private void notifyChange() {
+        if (changeListener != null) {
+            changeListener.onTodoChanged();
+        }
     }
 } 
