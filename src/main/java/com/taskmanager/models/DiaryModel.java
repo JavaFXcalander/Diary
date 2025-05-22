@@ -13,6 +13,9 @@ public class DiaryModel {
 
     @DatabaseField(canBeNull = false, dataType = DataType.SERIALIZABLE)
     private LocalDate date;
+    
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private UserModel user;
 
     @DatabaseField
     private String dDay;
@@ -162,5 +165,13 @@ public class DiaryModel {
 
     public void setAnynotes(String anynotes) {
         this.anynotes = anynotes;
+    }
+    
+    public UserModel getUser() {
+        return user;
+    }
+    
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 }

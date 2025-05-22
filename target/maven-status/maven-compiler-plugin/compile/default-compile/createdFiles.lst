@@ -1,4 +1,3 @@
-com/taskmanager/controllers/ProjectController.class
 com/taskmanager/database/DiaryDatabase.class
 com/taskmanager/controllers/TodoController.class
 com/taskmanager/controllers/BudgetController.class
@@ -6,11 +5,11 @@ com/taskmanager/MainApp.class
 com/taskmanager/controllers/HabitController.class
 com/taskmanager/controllers/ScheduleController.class
 com/taskmanager/timeline/TaskView.class
-com/taskmanager/controllers/ProjectController$ChecklistItem.class
-com/taskmanager/models/ProjectModel.class
 com/taskmanager/timeline/TimeUtil.class
 com/taskmanager/controllers/CalendarController.class
+com/taskmanager/controllers/RegisterController$1.class
 com/taskmanager/models/DiaryModel.class
 com/taskmanager/controllers/TodoChangeListener.class
 com/taskmanager/controllers/DiaryController.class
 com/taskmanager/timeline/TimeAxisPane.class
+com/taskmanager/controllers/LoginController$1.class

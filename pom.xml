@@ -62,6 +62,12 @@
             <version>33.0.0-jre</version> <!-- Or a newer compatible version -->
         </dependency>
 
+        <!-- jBCrypt for password hashing -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
 
     </dependencies>
 

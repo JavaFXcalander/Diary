@@ -1,37 +1,68 @@
 package com.taskmanager.models;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.time.LocalDate;
 
-@DatabaseTable(tableName = "projects")
+@DatabaseTable(tableName = "project_entries")
 public class ProjectModel {
     @DatabaseField(generatedId = true)
     private int id;
 
     @DatabaseField(canBeNull = false)
-    private String name;
+    private int year;
+
+    @DatabaseField(canBeNull = false)
+    private int month;
+
 
     @DatabaseField
-    private String description;
-
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private LocalDate startDate;
-
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private LocalDate endDate;
+    public String projectName1;
 
     @DatabaseField
-    private String status;
+    private String about1;
+
+    @DatabaseField
+    private String projectName2;
+
+    @DatabaseField
+    private String about2;
+
+    @DatabaseField
+    private String projectName3;
+
+    @DatabaseField
+    private String about3;
+
+
+    @DatabaseField
+    private String projectName4;
+
+    @DatabaseField
+    private String about4;
+
+    @DatabaseField
+    private String habit1;
+
+    @DatabaseField
+    private String habit2;
+
+    @DatabaseField
+    private String habit3;
+
+    @DatabaseField
+    private String habit4;
+
+
 
     public ProjectModel() {
         // ORMLite 需要一個無參構造器
     }
 
-    public ProjectModel(String name) {
-        this.name = name;
+    public ProjectModel(int year, int month) {
+        this.month = month;
+        this.year = year;
     }
 
     // Getters and Setters
@@ -43,43 +74,116 @@ public class ProjectModel {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getYear() {
+        return year;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setYear(int year) {
+        this.year = year;
     }
 
-    public String getDescription() {
-        return description;
+    public int getMonth() {
+        return month;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMonth(int month) {
+        this.month = month;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public String getProject1() {
+        return projectName1;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setProject1(String projectName1) {
+        this.projectName1 = projectName1;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public String getProject2() {
+        return projectName2;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setProject2(String projectName2) {
+        this.projectName2 = projectName2;
     }
 
-    public String getStatus() {
-        return status;
+    public String getProject3() {
+        return projectName3;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setProject3(String projectName3) {
+        this.projectName3 = projectName3;
     }
+
+    public String getProject4() {
+        return projectName4;
+    }
+
+    public void setProject4(String projectName4) {
+        this.projectName4 = projectName4;
+    }
+
+    public String getAbout1() {
+        return about1;
+    }
+
+    public void setAbout1(String about1) {
+        this.about1 = about1;
+    }
+
+    public String getAbout2() {
+        return about2;
+    }
+
+    public void setAbout2(String about2) {
+        this.about2 = about2;
+    }
+
+    public String getAbout3() {
+        return about3;
+    }
+    public void setAbout3(String about3) {
+        this.about3 = about3;
+    }
+    public String getAbout4() {
+        return about4;
+    }
+    public void setAbout4(String about4) {
+        this.about4 = about4;
+    }
+
+    public String getHabit1() {
+        return habit1;
+    }
+
+    public void setHabit1(String habit1) {
+        this.habit1 = habit1;
+    }
+
+    public String getHabit2() {
+        return habit2;
+    }
+
+    public void setHabit2(String habit2) {
+        this.habit2 = habit2;
+    }
+
+    public String getHabit3() {
+        return habit3;
+    }
+
+    public void setHabit3(String habit3) {
+        this.habit3 = habit3;
+    }
+
+    public String getHabit4() {
+        return habit4;
+    }
+
+    public void setHabit4(String habit4) {
+        this.habit4 = habit4;
+    }
+
+
 }
+
+    

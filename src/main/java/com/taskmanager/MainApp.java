@@ -9,9 +9,9 @@ import javafx.scene.Parent;
 public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/calendar.fxml"));
-        Scene scene = new Scene(root, 1200, 1000);
-        primaryStage.setTitle("My Diary Planner");
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+        Scene scene = new Scene(root, 400, 400);
+        primaryStage.setTitle("Login");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

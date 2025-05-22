@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" prefWidth="1024" prefHeight="768" stylesheets="@../css/project.css">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="com.taskmanager.controllers.ProjectController" prefWidth="1024" prefHeight="768" stylesheets="@../css/project.css">
     <VBox spacing="10" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <padding>
@@ -32,7 +32,7 @@
                 </columnConstraints>
 
                 <!-- Row 0: Project Name -->
-                <TextField promptText="project1" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0" styleClass="inner-field"/>
+                <TextField promptText="project1"  fx:id = "project1" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0" styleClass="inner-field"/>
 
                 <!-- Row 1: ProgressBar - 高度加大到30 -->
                 <ProgressBar fx:id="progressBar1" prefWidth="630" prefHeight="40" style="-fx-accent: #4CAF50; -fx-pref-height: 10px; -fx-min-height: 10px; -fx-max-height: 10px;" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
@@ -389,9 +389,9 @@
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10" />
                 </padding>
-                <Button text="Notes"  styleClass="Month-button"/>
-                <Button text="Month" styleClass="Diary-button"  maxWidth="150"/>
-                <Button text="Stickers" styleClass="Project-button" />
+                <Button text="Diary"  styleClass="Month-button" onAction="#handleDiaryButton"/>
+                <Button text="Month" onAction="#handleMonthButton" styleClass="Diary-button"  maxWidth="150"/>
+                <Button text="Project" styleClass="Project-button" />
             </HBox>
             <HBox spacing="5" alignment="CENTER">
                 <padding>
