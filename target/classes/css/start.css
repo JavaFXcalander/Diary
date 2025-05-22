@@ -1,0 +1,66 @@
+.root {
+    -fx-background-color: #f4f5f0;
+    -fx-font-family: 'Segoe UI', 'Arial', sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* Section titles */
+.label {
+    -fx-font-family: "Times New Roman"; 
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-text-fill: #888;
+    -fx-padding: 4 4 4 4;
+}
+
+/* Text fields and areas */
+.text-field {
+    -fx-font-family: "Times New Roman"; 
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-text-fill: #888;
+    -fx-background-color: transparent;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 1px;
+    -fx-background-radius: 1px;
+    -fx-padding: 6 6 6 6;
+}
+
+
+.button {
+    -fx-background-color: #f5ebe0;
+    -fx-text-fill: #888;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8 16;
+    -fx-border-color: #f5ebe0;
+    -fx-border-radius: 5;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+#registerLink {
+    -fx-text-fill: #a0615b;
+    -fx-font-weight: bold;
+    -fx-font-family: "Times New Roman"; 
+    -fx-cursor: hand;
+    cursor: pointer;
+}
+
+
+
+#loginLink {
+    -fx-text-fill: #3a6d98;
+    -fx-font-weight: bold;
+    -fx-font-family: "Times New Roman"; 
+    -fx-cursor: hand;
+    cursor: pointer;
+}
+
+#errorMessageLabel {
+    -fx-text-fill: #e74c3c;
+    -fx-font-weight: bold;
+    -fx-font-family: "Times New Roman"; 
+    -fx-cursor: hand;
+    cursor: pointer;
+}
+

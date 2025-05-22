@@ -1,50 +1,110 @@
-package com.taskmanager.services; // Corrected package
+package com.taskmanager.services;
 
-// import com.taskmanager.auth.AuthApi; // Placeholder for your AuthApi
-// import com.taskmanager.models.User; // Assuming User model would be in models package
+import com.taskmanager.database.DiaryDatabase;
+import com.taskmanager.models.UserModel;
+import org.mindrot.jbcrypt.BCrypt;
+import java.sql.SQLException;
+import java.util.regex.Pattern;
 
-public class UserService {
-
-    // private AuthApi authApi; // Placeholder for dependency injection
+public class UserService implements AuthApi { 
+    private final EmailValidator validator = new EmailValidator();
+    private final PwdValidator pwdvalidator = new PwdValidator();
+    private final DiaryDatabase diaryDatabase;
 
     public UserService() {
-        // Initialize AuthApi, possibly via a factory or dependency injection
-        // this.authApi = new YourAuthApiImplementation(); 
-        System.out.println("UserService initialized. Remember to integrate your AuthApi.");
+        this.diaryDatabase = DiaryDatabase.getInstance();
     }
 
-    public boolean login(String email, String password) {
+    public UserService(DiaryDatabase diaryDatabase) {
+        this.diaryDatabase = diaryDatabase;
+    }
+
+    @Override
+    public AuthStatus loginUser(String email, String password) {
         System.out.println("Attempting login for email: " + email);
-        // TODO: Integrate with AuthApi for actual login
-        // boolean isAuthenticated = authApi.login(email, password);
-        // For now, let's assume login is successful if email and password are not empty
-        if (email != null && !email.isEmpty() && password != null && !password.isEmpty()) {
-            System.out.println("Placeholder login successful for: " + email);
-            return true; 
+        if (!validator.isValid(email) || password == null || password.isEmpty()) {
+            return AuthStatus.INVALID_INPUT;
         }
-        System.out.println("Placeholder login failed for: " + email);
-        return false;
+
+        UserModel user = diaryDatabase.getUserEntry(email);
+        if (user == null) {
+            System.out.println("Login failed: User not found - " + email);
+            return AuthStatus.USER_NOT_FOUND;
+        }
+
+        if (BCrypt.checkpw(password, user.getHashedPassword())) {
+            System.out.println("Login successful for: " + email);
+            return AuthStatus.SUCCESS;
+        } else {
+            System.out.println("Login failed: Incorrect password for - " + email);
+            return AuthStatus.INCORRECT_PASSWORD;
+        }
     }
 
-    public boolean register(String email, String password, String confirmPassword) {
+    @Override
+    public AuthStatus registerUser(String email, String password, String confirmPassword) {
         System.out.println("Attempting registration for email: " + email);
-        if (email == null || email.isEmpty()) {
-            System.out.println("Registration failed: Email cannot be empty.");
-            return false;
+        if (!validator.isValid(email)) {
+            System.out.println("Registration failed: Invalid email format.");
+            return AuthStatus.INVALID_INPUT;
         }
-        if (password == null || password.isEmpty()) {
-            System.out.println("Registration failed: Password cannot be empty.");
-            return false;
+        if (!pwdvalidator.isValid(password)) {
+            System.out.println("Registration failed: Password does not meet criteria.");
+            return AuthStatus.INVALID_INPUT;
         }
         if (!password.equals(confirmPassword)) {
             System.out.println("Registration failed: Passwords do not match.");
-            return false;
+            return AuthStatus.INVALID_INPUT; 
         }
 
-        // TODO: Integrate with AuthApi for actual registration
-        // boolean isRegistered = authApi.register(email, password);
-        // For now, let's assume registration is successful
-        System.out.println("Placeholder registration successful for: " + email);
-        return true;
+        if (userExists(email)) {
+            System.out.println("Registration failed: Email already exists - " + email);
+            return AuthStatus.EMAIL_ALREADY_EXISTS;
+        }
+
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        UserModel newUser = new UserModel();
+        newUser.setEmail(email);
+        newUser.setHashedPassword(hashedPassword);
+        
+        try {
+            diaryDatabase.saveUserEntry(newUser); 
+            System.out.println("Registration successful for: " + email);
+            return AuthStatus.SUCCESS;
+        } catch (RuntimeException e) { 
+            if (e.getCause() instanceof SQLException && ((SQLException)e.getCause()).getSQLState().startsWith("23")) { 
+                 System.out.println("Registration failed: Email already exists (database constraint) - " + email);
+                 return AuthStatus.EMAIL_ALREADY_EXISTS;
+                }
+                e.printStackTrace();
+                System.err.println("Registration failed due to database error: " + e.getMessage());
+            return AuthStatus.DATABASE_ERROR;
+        }
+    }
+
+    @Override
+    public boolean userExists(String email) {
+        return diaryDatabase.getUserEntry(email) != null;
+    }
+    
+    
+
+}
+
+class EmailValidator {
+    private static final Pattern P = Pattern.compile(
+        "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+        Pattern.CASE_INSENSITIVE); 
+    public boolean isValid(String email){ 
+        return email != null && P.matcher(email).matches();
+    }
+}
+
+class PwdValidator {
+    private static final Pattern PWD_PATTERN =
+    Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,20}$");
+
+    public boolean isValid(String pwd){
+        return pwd != null && PWD_PATTERN.matcher(pwd).matches();
     }
 }

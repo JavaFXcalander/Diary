@@ -10,8 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import com.taskmanager.database.DiaryDatabase;
 import com.taskmanager.models.DiaryModel;
@@ -20,6 +18,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import com.taskmanager.services.UserSession;
+import com.taskmanager.models.UserModel;
 
 public class DiaryController implements TodoChangeListener {
 
@@ -127,7 +127,15 @@ public class DiaryController implements TodoChangeListener {
             entry.setTodo(serializedTodos);
         }
         
-        
+        // 設置當前用戶
+        UserSession userSession = UserSession.getInstance();
+        if (userSession.isLoggedIn()) {
+            String email = userSession.getCurrentUserEmail();
+            UserModel user = database.getUserEntry(email);
+            if (user != null) {
+                entry.setUser(user);
+            }
+        }
         
         // 保存到數據庫
         database.saveDiaryEntry(entry);
@@ -201,7 +209,15 @@ public class DiaryController implements TodoChangeListener {
     private void loadDiaryContent(LocalDate date) {
         try {
             // 從數據庫中加載選定日期的日記內容
-            DiaryModel entry = database.getDiaryEntry(date);
+            DiaryModel entry;
+            UserSession userSession = UserSession.getInstance();
+            
+            if (userSession.isLoggedIn()) {
+                // 如果用戶已登錄，加載該用戶的日記
+                entry = database.getDiaryEntry(date, userSession.getCurrentUserEmail());
+            } else {
+                return;
+            }
             
             if (entry != null) {
                 // 填充UI元素

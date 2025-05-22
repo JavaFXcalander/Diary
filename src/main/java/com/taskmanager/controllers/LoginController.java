@@ -1,6 +1,8 @@
 package com.taskmanager.controllers; // Package updated based on list_dir
 
 import com.taskmanager.services.UserService; // Corrected UserService import
+import com.taskmanager.services.AuthApi.AuthStatus; // Import AuthStatus
+import com.taskmanager.services.UserSession; // Import UserSession
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,11 +27,11 @@ public class LoginController {
     @FXML
     private Label errorMessageLabel;
 
-    private UserService userService;
+    private UserService userService; // Will be initialized to use AuthApi methods
 
     public void initialize() {
         userService = new UserService();
-        errorMessageLabel.setText(""); // Clear error message on init
+        errorMessageLabel.setText(""); 
     }
 
     @FXML
@@ -42,27 +44,43 @@ public class LoginController {
             return;
         }
 
-        boolean loginSuccess = userService.login(email, password);
+        AuthStatus loginStatus = userService.loginUser(email, password);
 
-        if (loginSuccess) {
-            errorMessageLabel.setText(""); // Clear error message
-            System.out.println("Login successful! Navigating to calendar.");
-            try {
-                // Navigate to the main application screen (calendar.fxml)
-                switchScene(event, "/fxml/calendar.fxml", "My Diary Planner");
-            } catch (IOException e) {
-                e.printStackTrace();
-                errorMessageLabel.setText("Error loading application.");
-            }
-        } else {
-            errorMessageLabel.setText("Invalid email or password. Please try again.");
+        switch (loginStatus) {
+            case SUCCESS:
+                errorMessageLabel.setText(""); 
+                System.out.println("Login successful! Navigating to calendar.");
+                // Set the current user email in the UserSession
+                UserSession.getInstance().setCurrentUserEmail(email);
+                try {
+                    mainScene(event, "/fxml/calendar.fxml", "My Diary Planner");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    errorMessageLabel.setText("Error loading application.");
+                }
+                break;
+            case USER_NOT_FOUND:
+                errorMessageLabel.setText("User not found. Please check your email or register.");
+                break;
+            case INCORRECT_PASSWORD:
+                errorMessageLabel.setText("Incorrect password. Please try again.");
+                break;
+            case INVALID_INPUT:
+                 // UserService logs more specific validation details if any
+                errorMessageLabel.setText("Invalid email or password format.");
+                break;
+            case DATABASE_ERROR:
+                errorMessageLabel.setText("Login failed due to a server error. Please try again later.");
+                break;
+            default:
+                errorMessageLabel.setText("Login failed. Please try again.");
+                break;
         }
     }
 
     @FXML
     private void handleRegisterLink(ActionEvent event) {
         try {
-            // Navigate to the registration screen
             switchScene(event, "/fxml/register.fxml", "Register");
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,13 +88,26 @@ public class LoginController {
         }
     }
 
-    // Inline scene switching method (alternative to SceneUtil)
+    
     private void switchScene(ActionEvent event, String fxmlFile, String title) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 400, 400); // Match scene size from MainApp
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+
+    private void mainScene(ActionEvent event, String fxmlFile, String title) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 1200, 1000); // Match scene size from MainApp
         stage.setTitle(title);
         stage.setScene(scene);
-        stage.show();
+
+        stage.show();            // ① 先顯示，計算好視窗大小
+        stage.centerOnScreen();
     }
 }

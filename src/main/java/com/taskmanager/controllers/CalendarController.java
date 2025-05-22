@@ -245,4 +245,10 @@ public class CalendarController {
         Scene scene = ((Node) event.getSource()).getScene();
         scene.setRoot(diaryRoot);
     }
+
+    public void setMonthAndYear(int month, int year) {
+        this.currentDate = LocalDate.of(year, month, 1); // 確保 currentDate 被正確設置為完整的 LocalDate
+        updateCalendar();
+    }
+
 }

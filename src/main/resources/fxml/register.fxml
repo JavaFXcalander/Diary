@@ -10,16 +10,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="com.taskmanager.controller.RegisterController">
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/8.0.171" 
+      fx:controller="com.taskmanager.controllers.RegisterController" stylesheets="@../css/start.css">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
-    <Label text="Register" >
-        <font>
-            <Font name="Arial Bold" size="24.0" />
-        </font>
-    </Label>
+    <Label text="Register" style="-fx-font-size: 24px;"/>
 
     <TextField fx:id="emailField" promptText="Email" maxWidth="300"/>
     <PasswordField fx:id="passwordField" promptText="Password" maxWidth="300"/>
@@ -27,7 +24,7 @@
 
     <Button fx:id="registerButton" onAction="#handleRegister" text="Register" defaultButton="true" prefWidth="100"/>
 
-    <Label fx:id="errorMessageLabel" textFill="RED" />
+    <Label fx:id="errorMessageLabel" textFill="#4a7da8" />
     
     <HBox alignment="CENTER" spacing="5">
         <Label text="Already have an account?" />
