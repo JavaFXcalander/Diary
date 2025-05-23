@@ -123,3 +123,17 @@
     -fx-text-fill: #888;
     -fx-font-family: "Times New Roman", serif;
 }
+
+.add-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #888;
+    -fx-font-size: 20;
+    -fx-font-weight: normal;
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+}
+
+
+

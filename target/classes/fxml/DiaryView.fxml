@@ -27,11 +27,15 @@
 
     <!-- 頂部區域 10% -->
     <VBox GridPane.rowIndex="0"  GridPane.columnIndex="1" alignment="BOTTOM_LEFT">
-        <HBox alignment="BOTTOM_LEFT">
+        <HBox alignment="CENTER_LEFT" spacing="10">
             <Label fx:id="dateLabel" styleClass="header-date"/>
         </HBox>
     </VBox>
 
+    <VBox GridPane.rowIndex="0"  GridPane.columnIndex="2" alignment="TOP_RIGHT">
+        <Button fx:id="addButton" text="..." styleClass="add-button"/>
+    </VBox>
+    
     <!-- 中間 80% -->
     <GridPane  GridPane.rowIndex="1" GridPane.columnIndex="1" maxWidth="1080" alignment="CENTER" style="-fx-border-color: #cccccc; -fx-border-width: 0.5px;">
 

@@ -13,6 +13,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import com.taskmanager.database.DiaryDatabase;
 import com.taskmanager.models.DiaryModel;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
+import javafx.geometry.Side;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -29,13 +34,12 @@ public class DiaryController implements TodoChangeListener {
     @FXML private TextArea anynotesArea;
     @FXML private VBox todoContainer;
     @FXML private TodoController todoContainerController; // This will be automatically injected by JavaFX
+    @FXML private Button addButton;
     
     private LocalDate currentDate = LocalDate.now();
     private DiaryDatabase database = DiaryDatabase.getInstance();
+    private ContextMenu addMenu;
 
-   
-    
-    
     @FXML
     public void initialize() {
         // 設定今天日期格式
@@ -53,7 +57,33 @@ public class DiaryController implements TodoChangeListener {
         // 設定所有輸入欄位的失焦事件處理
         setupBlurEventHandlers();
 
-        
+        // 建立 ContextMenu
+        addMenu = new ContextMenu();
+        MenuItem addToProject = new MenuItem("新增至專案");
+        MenuItem archive = new MenuItem("封存");
+        MenuItem delete = new MenuItem("刪除");
+        delete.setStyle("-fx-text-fill: #e57373;"); // 紅色字
+        addMenu.getItems().addAll(addToProject, archive, delete);
+
+        addButton.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                if (addMenu.isShowing()) {
+                    addMenu.hide();
+                } else {
+                    addMenu.show(addButton, Side.BOTTOM, -addButton.getWidth()-40, 0);
+                }
+            }
+        });
+        // 可加上各選項的事件處理
+        addToProject.setOnAction(ev -> {
+            // TODO: 新增至專案
+        });
+        archive.setOnAction(ev -> {
+            // TODO: 封存
+        });
+        delete.setOnAction(ev -> {
+            // TODO: 刪除
+        });
     }
 
     private void setupBlurEventHandlers() {
@@ -105,8 +135,6 @@ public class DiaryController implements TodoChangeListener {
                 saveDiaryEntry();
             }
         });
-
-       
     }
     
     private void saveDiaryEntry() {
@@ -172,8 +200,6 @@ public class DiaryController implements TodoChangeListener {
         dateLabel.setPadding(Insets.EMPTY);
     }
 
-    
-
     @FXML
     private void handleMonthButton(ActionEvent event) throws IOException {
         Parent diaryRoot = FXMLLoader.load(getClass().getResource("/fxml/calendar.fxml"));
@@ -235,7 +261,6 @@ public class DiaryController implements TodoChangeListener {
                     todoContainerController.loadTodoList(entry.getTodo());
                 }
                 
-                
             } else {
                 // 如果沒有找到該日期的條目，清空所有欄位
                 dDayField.clear();
@@ -269,8 +294,9 @@ public class DiaryController implements TodoChangeListener {
                 todoContainerController.loadTodoList("");
             }
             
-            
-        }
         }
     }
+}
+
+   
 
