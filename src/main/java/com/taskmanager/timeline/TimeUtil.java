@@ -20,7 +20,7 @@ public class TimeUtil {
         long timelineStartSeconds = TIMELINE_VIEW_START_HOUR.toSecondOfDay();
 
         
-    
+ 
         // Time is between TIMELINE_VIEW_START_HOUR and 23:59:59
         secondsIntoTimelineView = timeOfDaySeconds - timelineStartSeconds;
 
