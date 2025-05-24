@@ -1,6 +1,7 @@
 /Users/angel/Diary/src/main/java/com/taskmanager/models/ProjectModel.java
 /Users/angel/Diary/src/main/java/com/taskmanager/controllers/CalendarController.java
 /Users/angel/Diary/src/main/java/com/taskmanager/timeline/TaskView.java
+/Users/angel/Diary/src/main/java/com/taskmanager/services/GoogleCalendarService.java
 /Users/angel/Diary/src/main/java/com/taskmanager/services/UserService.java
 /Users/angel/Diary/src/main/java/com/taskmanager/controllers/HabitController.java
 /Users/angel/Diary/src/main/java/com/taskmanager/models/DiaryModel.java
@@ -8,6 +9,7 @@
 /Users/angel/Diary/src/main/java/com/taskmanager/models/UserModel.java
 /Users/angel/Diary/src/main/java/com/taskmanager/timeline/TimeAxisPane.java
 /Users/angel/Diary/src/main/java/com/taskmanager/timeline/TimeUtil.java
+/Users/angel/Diary/src/main/java/com/taskmanager/services/UserManager.java
 /Users/angel/Diary/src/main/java/com/taskmanager/controllers/RegisterController.java
 /Users/angel/Diary/src/main/java/com/taskmanager/database/DiaryDatabase.java
 /Users/angel/Diary/src/main/java/com/taskmanager/MainApp.java
