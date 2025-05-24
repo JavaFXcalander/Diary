@@ -3,6 +3,7 @@ package com.taskmanager.controllers; // Package updated based on list_dir
 import com.taskmanager.services.UserService; // Corrected UserService import
 import com.taskmanager.services.AuthApi.AuthStatus; // Import AuthStatus
 import com.taskmanager.services.UserSession; // Import UserSession
+import com.taskmanager.services.UserManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import com.taskmanager.models.UserModel;
+import com.taskmanager.database.DiaryDatabase;
 
 import java.io.IOException;
 
@@ -28,9 +31,11 @@ public class LoginController {
     private Label errorMessageLabel;
 
     private UserService userService; // Will be initialized to use AuthApi methods
+    private DiaryDatabase diaryDatabase;
 
     public void initialize() {
         userService = new UserService();
+        diaryDatabase = DiaryDatabase.getInstance();
         errorMessageLabel.setText(""); 
     }
 
@@ -52,6 +57,9 @@ public class LoginController {
                 System.out.println("Login successful! Navigating to calendar.");
                 // Set the current user email in the UserSession
                 UserSession.getInstance().setCurrentUserEmail(email);
+                // Set the current user in UserManager
+                UserModel user = diaryDatabase.getUserEntry(email);
+                UserManager.getInstance().setCurrentUser(user);
                 try {
                     mainScene(event, "/fxml/calendar.fxml", "My Diary Planner");
                 } catch (IOException e) {

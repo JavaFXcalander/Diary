@@ -25,6 +25,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import com.taskmanager.services.UserSession;
 import com.taskmanager.models.UserModel;
+import com.taskmanager.services.GoogleCalendarService;
+import javafx.application.HostServices;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import java.security.GeneralSecurityException;
+import com.taskmanager.services.UserManager;
+import com.taskmanager.MainApp;
 
 public class DiaryController implements TodoChangeListener {
 
@@ -39,6 +46,9 @@ public class DiaryController implements TodoChangeListener {
     private LocalDate currentDate = LocalDate.now();
     private DiaryDatabase database = DiaryDatabase.getInstance();
     private ContextMenu addMenu;
+    private GoogleCalendarService googleCalendarService;
+    private HostServices hostServices;
+    private MenuItem addGoodleAPI;
 
     @FXML
     public void initialize() {
@@ -59,11 +69,7 @@ public class DiaryController implements TodoChangeListener {
 
         // 建立 ContextMenu
         addMenu = new ContextMenu();
-        MenuItem addToProject = new MenuItem("新增至專案");
-        MenuItem archive = new MenuItem("封存");
-        MenuItem delete = new MenuItem("刪除");
-        delete.setStyle("-fx-text-fill: #e57373;"); // 紅色字
-        addMenu.getItems().addAll(addToProject, archive, delete);
+        setupContextMenu();
 
         addButton.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
@@ -75,15 +81,34 @@ public class DiaryController implements TodoChangeListener {
             }
         });
         // 可加上各選項的事件處理
-        addToProject.setOnAction(ev -> {
-            // TODO: 新增至專案
+        addGoodleAPI.setOnAction(ev -> {
+            try {
+                if (googleCalendarService.isUserAuthorized()) {
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Google行事曆");
+                    alert.setHeaderText(null);
+                    alert.setContentText("您已經連結Google行事曆");
+                    alert.showAndWait();
+                } else {
+                    String authUrl = googleCalendarService.getAuthorizationUrl();
+                    if (hostServices != null) {
+                        hostServices.showDocument(authUrl);
+                    }
+                    // 等待用戶授權後更新狀態
+                    updateGoogleCalendarStatus();
+                }
+            } catch (IOException | GeneralSecurityException e) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("錯誤");
+                alert.setHeaderText(null);
+                alert.setContentText("無法連接到Google行事曆: " + e.getMessage());
+                alert.showAndWait();
+            }
         });
-        archive.setOnAction(ev -> {
-            // TODO: 封存
-        });
-        delete.setOnAction(ev -> {
-            // TODO: 刪除
-        });
+        
+        googleCalendarService = new GoogleCalendarService(UserManager.getInstance().getCurrentUser().getEmail());
+        setHostServices(MainApp.getHostServicesInstance());
+        updateGoogleCalendarStatus();
     }
 
     private void setupBlurEventHandlers() {
@@ -295,6 +320,24 @@ public class DiaryController implements TodoChangeListener {
             }
             
         }
+    }
+
+    private void updateGoogleCalendarStatus() {
+        boolean isAuthorized = googleCalendarService.isUserAuthorized();
+        addGoodleAPI.setText(isAuthorized ? "已連結Google行事曆" : "新增Google行事曆");
+    }
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
+    }
+
+    private void setupContextMenu() {
+        addMenu = new ContextMenu();
+        MenuItem addTask = new MenuItem("新增待辦事項");
+        MenuItem addEvent = new MenuItem("新增事件");
+        addGoodleAPI = new MenuItem("新增Google行事曆");
+
+        addMenu.getItems().addAll(addTask, addEvent, addGoodleAPI);
     }
 }
 
