@@ -32,6 +32,16 @@ import javafx.scene.control.Alert.AlertType;
 import java.security.GeneralSecurityException;
 import com.taskmanager.services.UserManager;
 import com.taskmanager.MainApp;
+import java.time.LocalDateTime;
+import java.util.List;
+import com.taskmanager.timeline.TaskView;
+import com.taskmanager.timeline.TimeAxisPane;
+import java.time.LocalTime;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import com.taskmanager.timeline.TimeUtil;
+import com.taskmanager.services.CalendarEventSyncService;
 
 public class DiaryController implements TodoChangeListener {
 
@@ -42,11 +52,13 @@ public class DiaryController implements TodoChangeListener {
     @FXML private VBox todoContainer;
     @FXML private TodoController todoContainerController; // This will be automatically injected by JavaFX
     @FXML private Button addButton;
+    @FXML private TimeAxisPane timeAxisPane;
     
     private LocalDate currentDate = LocalDate.now();
     private DiaryDatabase database = DiaryDatabase.getInstance();
     private ContextMenu addMenu;
     private GoogleCalendarService googleCalendarService;
+    private CalendarEventSyncService syncService;
     private HostServices hostServices;
     private MenuItem addGoodleAPI;
 
@@ -67,9 +79,61 @@ public class DiaryController implements TodoChangeListener {
         // 設定所有輸入欄位的失焦事件處理
         setupBlurEventHandlers();
 
+        // 初始化 Google Calendar 服務和同步服務
+        String userEmail = UserManager.getInstance().getCurrentUser().getEmail();
+        googleCalendarService = new GoogleCalendarService(userEmail);
+        syncService = CalendarEventSyncService.getInstance();
+        syncService.initialize(userEmail);
+        
+        setHostServices(MainApp.getHostServicesInstance());
+        
         // 建立 ContextMenu
         addMenu = new ContextMenu();
+        addGoodleAPI = new MenuItem("新增Google行事曆");
+        addGoodleAPI.setOnAction(ev -> {
+            try {
+                if (googleCalendarService.isUserAuthorized()) {
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Google行事曆");
+                    alert.setHeaderText(null);
+                    alert.setContentText("您已經連結Google行事曆");
+                    alert.showAndWait();
+                } else {
+                    // Perform the full authorization flow
+                    googleCalendarService.authorizeUser();
+                    // Update status after authorization attempt
+                    updateGoogleCalendarStatus();
+                    // Optionally, confirm to the user if successful
+                    if (googleCalendarService.isUserAuthorized()) {
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Google行事曆");
+                        alert.setHeaderText(null);
+                        alert.setContentText("已成功連結Google行事曆！");
+                        alert.showAndWait();
+                    } else {
+                        // This else might be redundant if authorizeUser throws an exception on failure,
+                        // which would be caught by the outer catch block.
+                        // However, if authorizeUser can complete without authorizing (e.g., user closes browser),
+                        // this provides feedback.
+                        Alert alert = new Alert(AlertType.WARNING);
+                        alert.setTitle("Google行事曆");
+                        alert.setHeaderText(null);
+                        alert.setContentText("未完成Google行事曆連結。");
+                        alert.showAndWait();
+                    }
+                }
+            } catch (IOException | GeneralSecurityException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("錯誤");
+                alert.setHeaderText(null);
+                alert.setContentText("無法連接到Google行事曆: " + e.getMessage());
+                alert.showAndWait();
+            }
+        });
+        
         setupContextMenu();
+        updateGoogleCalendarStatus();
 
         addButton.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
@@ -80,35 +144,11 @@ public class DiaryController implements TodoChangeListener {
                 }
             }
         });
-        // 可加上各選項的事件處理
-        addGoodleAPI.setOnAction(ev -> {
-            try {
-                if (googleCalendarService.isUserAuthorized()) {
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("Google行事曆");
-                    alert.setHeaderText(null);
-                    alert.setContentText("您已經連結Google行事曆");
-                    alert.showAndWait();
-                } else {
-                    String authUrl = googleCalendarService.getAuthorizationUrl();
-                    if (hostServices != null) {
-                        hostServices.showDocument(authUrl);
-                    }
-                    // 等待用戶授權後更新狀態
-                    updateGoogleCalendarStatus();
-                }
-            } catch (IOException | GeneralSecurityException e) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("錯誤");
-                alert.setHeaderText(null);
-                alert.setContentText("無法連接到Google行事曆: " + e.getMessage());
-                alert.showAndWait();
-            }
-        });
-        
-        googleCalendarService = new GoogleCalendarService(UserManager.getInstance().getCurrentUser().getEmail());
-        setHostServices(MainApp.getHostServicesInstance());
-        updateGoogleCalendarStatus();
+
+        if (timeAxisPane != null) {
+            timeAxisPane.setOnContextMenuRequested(e -> 
+                addMenu.show(timeAxisPane, e.getScreenX(), e.getScreenY()));
+        }
     }
 
     private void setupBlurEventHandlers() {
@@ -301,8 +341,11 @@ public class DiaryController implements TodoChangeListener {
                 if (todoContainerController != null) {
                     todoContainerController.loadTodoList("");
                 }
-                
             }
+
+            // 載入 Google Calendar 事件到時間軸
+            loadGoogleCalendarEvents(date);
+            
         } catch (Exception e) {
             // 如果加载日记数据时出错，清空所有字段并显示空白页面
             e.printStackTrace();
@@ -318,13 +361,110 @@ public class DiaryController implements TodoChangeListener {
             if (todoContainerController != null) {
                 todoContainerController.loadTodoList("");
             }
-            
         }
+    }
+
+    /**
+     * 載入指定日期的 Google Calendar 事件到時間軸
+     */
+    private void loadGoogleCalendarEvents(LocalDate date) {
+        if (timeAxisPane == null || syncService == null) {
+            return;
+        }
+
+        try {
+            List<GoogleCalendarService.CalendarEvent> events = syncService.getEventsForDate(date);
+            
+            // 清除時間軸上現有的 Google Calendar 事件
+            clearGoogleCalendarEventsFromTimeline();
+            
+            // 添加新的事件到時間軸
+            for (GoogleCalendarService.CalendarEvent event : events) {
+                addEventToTimeline(event);
+            }
+            
+            // 在控制台顯示載入的事件數量
+            System.out.println("已載入 " + events.size() + " 個 Google Calendar 事件到時間軸");
+            
+        } catch (Exception e) {
+            System.err.println("載入 Google Calendar 事件時發生錯誤: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 清除時間軸上的 Google Calendar 事件
+     */
+    private void clearGoogleCalendarEventsFromTimeline() {
+        if (timeAxisPane == null) return;
+        
+        // 移除所有 TaskView（Google Calendar 事件）
+        timeAxisPane.getChildren().removeIf(node -> node instanceof TaskView);
+    }
+
+    /**
+     * 將 Google Calendar 事件添加到時間軸
+     */
+    private void addEventToTimeline(GoogleCalendarService.CalendarEvent event) {
+        if (timeAxisPane == null) return;
+
+        try {
+            // 轉換時間戳為 LocalTime
+            LocalTime startTime = Instant.ofEpochMilli(event.getStartTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalTime();
+            
+            Duration duration = Duration.ofMillis(event.getEndTime() - event.getStartTime());
+            
+            // 檢查事件是否在時間軸顯示範圍內
+            if (isTimeInTimelineRange(startTime)) {
+                // 創建 TaskView 來顯示事件
+                TaskView eventView = new TaskView(event.getSummary(), startTime, duration);
+                
+                // 設置 Google Calendar 事件的特殊樣式
+                eventView.setStyle("-fx-background-color: #34a853; -fx-border-color: #2d8f47; -fx-border-width: 1; -fx-padding: 5px; -fx-background-radius: 3; -fx-border-radius: 3;");
+                
+                // 計算在時間軸上的位置和大小
+                double timelineHeight = timeAxisPane.getHeight();
+                double y = TimeUtil.toY(startTime, timelineHeight);
+                double height = (duration.toMinutes() / 60.0) * (timelineHeight / TimeUtil.TIMELINE_DURATION_HOURS);
+                
+                // 設置位置和大小
+                eventView.setLayoutX(40); // 留出時間標籤的空間
+                eventView.setLayoutY(y);
+                eventView.setPrefWidth(timeAxisPane.getWidth() - 50);
+                eventView.setPrefHeight(Math.max(height, 20)); // 最小高度 20px
+                
+                // 添加到時間軸
+                timeAxisPane.addTask(eventView);
+            }
+        } catch (Exception e) {
+            System.err.println("添加事件到時間軸時發生錯誤: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 檢查時間是否在時間軸顯示範圍內
+     */
+    private boolean isTimeInTimelineRange(LocalTime time) {
+        LocalTime startHour = TimeUtil.TIMELINE_VIEW_START_HOUR;
+        LocalTime endHour = startHour.plusHours(TimeUtil.TIMELINE_DURATION_HOURS);
+        
+        return !time.isBefore(startHour) && !time.isAfter(endHour);
     }
 
     private void updateGoogleCalendarStatus() {
         boolean isAuthorized = googleCalendarService.isUserAuthorized();
         addGoodleAPI.setText(isAuthorized ? "已連結Google行事曆" : "新增Google行事曆");
+        
+        // 如果已授權，啟動同步服務並載入當前日期的事件
+        if (isAuthorized) {
+            // 啟動定期同步
+            syncService.startPeriodicSync();
+            // 載入當前日期的事件
+            loadGoogleCalendarEvents(currentDate);
+        }
     }
 
     public void setHostServices(HostServices hostServices) {
@@ -332,12 +472,42 @@ public class DiaryController implements TodoChangeListener {
     }
 
     private void setupContextMenu() {
-        addMenu = new ContextMenu();
-        MenuItem addTask = new MenuItem("新增待辦事項");
-        MenuItem addEvent = new MenuItem("新增事件");
-        addGoodleAPI = new MenuItem("新增Google行事曆");
+        // 添加重新整理快取的選項
+        MenuItem refreshCache = new MenuItem("重新整理Google行事曆");
+        refreshCache.setOnAction(ev -> {
+            if (syncService != null && googleCalendarService.isUserAuthorized()) {
+                syncService.manualSync();
+                // 重新載入當前日期的事件
+                loadGoogleCalendarEvents(currentDate);
+                
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Google行事曆");
+                alert.setHeaderText(null);
+                alert.setContentText("Google行事曆同步已觸發");
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Google行事曆");
+                alert.setHeaderText(null);
+                alert.setContentText("請先連結Google行事曆");
+                alert.showAndWait();
+            }
+        });
 
-        addMenu.getItems().addAll(addTask, addEvent, addGoodleAPI);
+        // 添加顯示同步狀態的選項
+        MenuItem showSyncStatus = new MenuItem("顯示同步狀態");
+        showSyncStatus.setOnAction(ev -> {
+            if (syncService != null) {
+                String syncStatus = syncService.getSyncStatus();
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Google行事曆同步狀態");
+                alert.setHeaderText(null);
+                alert.setContentText(syncStatus);
+                alert.showAndWait();
+            }
+        });
+
+        addMenu.getItems().addAll(addGoodleAPI, refreshCache, showSyncStatus);
     }
 }
 

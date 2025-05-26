@@ -3,7 +3,6 @@ package com.taskmanager.models;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.time.LocalDate;
 
 @DatabaseTable(tableName = "project_entries")
 public class ProjectModel {

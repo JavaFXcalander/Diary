@@ -55,8 +55,11 @@ public class TodoController {
         return sb.toString();
     }
 
+    public VBox getTodoList() {
+        return todoList;
+    }
 
-    private HBox createRow() {
+    public HBox createRow() {
         CheckBox cb = new CheckBox();
         TextField tf = new TextField();
         tf.setPromptText("Todo…");
@@ -135,7 +138,7 @@ public class TodoController {
     }
     
     // 通知數據變更
-    private void notifyChange() {
+    public void notifyChange() {
         if (changeListener != null) {
             changeListener.onTodoChanged();
         }

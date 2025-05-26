@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import com.taskmanager.timeline.TimeAxisPane?>
 
 <!-- <?import javafx.scene.canvas.Canvas?> -->
 <!-- <?import javafx.scene.paint.Color?> -->
@@ -69,7 +70,7 @@
                 </columnConstraints>
 
                 <VBox  GridPane.columnIndex="0" prefWidth="177" prefHeight="112.5" style="-fx-border-color: #cccccc; -fx-border-width: 0.5px;">
-                    <Label text="Priority 優先事項"/>
+                    <Label text="All day 整日行程"/>
                     <TextField fx:id="priorityField"/>
                 </VBox>
 

@@ -18,6 +18,11 @@ import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import java.io.IOException;
+import com.taskmanager.services.GoogleCalendarService;
+import com.taskmanager.services.CalendarEventSyncService;
+import com.taskmanager.services.UserManager;
+import java.security.GeneralSecurityException;
+import java.util.List;
 
 public class CalendarController {
 
@@ -34,10 +39,28 @@ public class CalendarController {
     private Button nextButton;
     
     private LocalDate currentDate;
+    private GoogleCalendarService googleCalendarService;
+    private CalendarEventSyncService syncService;
     
     public void initialize() {
         // 初始化為當前日期
         currentDate = LocalDate.now();
+        
+        // 初始化 Google Calendar 服務和同步服務
+        try {
+            String userEmail = UserManager.getInstance().getCurrentUser().getEmail();
+            googleCalendarService = new GoogleCalendarService(userEmail);
+            syncService = CalendarEventSyncService.getInstance();
+            syncService.initialize(userEmail);
+            
+            // 如果已授權，啟動同步服務
+            if (googleCalendarService.isUserAuthorized()) {
+                syncService.startPeriodicSync();
+                System.out.println("CalendarController: 已啟動 Google Calendar 同步服務");
+            }
+        } catch (Exception e) {
+            System.err.println("無法初始化 Google Calendar 服務: " + e.getMessage());
+        }
         
         // 設置按鈕動態效果
         setupButtonEffects();
@@ -195,6 +218,9 @@ public class CalendarController {
             cell.getStyleClass().add("today-cell");
             dateLabel.getStyleClass().add("today-label");
         }
+
+        // 檢查並顯示 Google Calendar 事件
+        addGoogleCalendarEventsToCell(cell, cellDate);
         
         // 添加滑鼠懸停效果
         String baseStyle = cell.getStyle();
@@ -210,7 +236,56 @@ public class CalendarController {
         
         return cell;
     }
-    
+
+    /**
+     * 在日曆格子中添加 Google Calendar 事件指示器
+     */
+    private void addGoogleCalendarEventsToCell(VBox cell, LocalDate date) {
+        if (syncService == null) return;
+
+        try {
+            List<GoogleCalendarService.CalendarEvent> events = syncService.getEventsForDate(date);
+            
+            if (!events.isEmpty()) {
+                // 創建事件指示器容器
+                VBox eventContainer = new VBox(1);
+                eventContainer.setAlignment(Pos.BOTTOM_LEFT);
+                eventContainer.setPrefWidth(Double.MAX_VALUE);
+                
+                // 最多顯示 3 個事件，如果更多則顯示 "..."
+                int maxEventsToShow = Math.min(events.size(), 3);
+                
+                for (int i = 0; i < maxEventsToShow; i++) {
+                    GoogleCalendarService.CalendarEvent event = events.get(i);
+                    Label eventLabel = new Label(truncateText(event.getSummary(), 12));
+                    eventLabel.setStyle("-fx-background-color: #637a60; -fx-text-fill: white; " +
+                                      "-fx-font-size: 8px; -fx-padding: 1px 3px; " +
+                                      "-fx-background-radius: 2px; -fx-max-width: 90px;");
+                    eventContainer.getChildren().add(eventLabel);
+                }
+                
+                // 如果有更多事件，顯示 "..."
+                if (events.size() > 3) {
+                    Label moreLabel = new Label("+" + (events.size() - 3) + " more");
+                    moreLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 7px;");
+                    eventContainer.getChildren().add(moreLabel);
+                }
+                
+                cell.getChildren().add(eventContainer);
+            }
+        } catch (Exception e) {
+            // 靜默處理錯誤，不影響日曆顯示
+            System.err.println("載入日曆事件時發生錯誤 (" + date + "): " + e.getMessage());
+        }
+    }
+
+
+    private String truncateText(String text, int maxLength) {
+        if (text == null) return "";
+        if (text.length() <= maxLength) return text;
+        return text.substring(0, maxLength - 3) + "...";
+    }
+
     private void handleDateClick(LocalDate date) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DiaryView.fxml"));
