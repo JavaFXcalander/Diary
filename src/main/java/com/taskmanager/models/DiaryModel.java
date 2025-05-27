@@ -51,8 +51,12 @@ public class DiaryModel {
     @DatabaseField
     private String anynotes;
 
+    @DatabaseField(columnName = "calendarEmpty", defaultValue = "0")
+    private int calendarEmpty = 0;
+
     public DiaryModel() {
         // ORMLite 需要一個無參構造器
+        this.calendarEmpty = 0;
     }
 
     public DiaryModel(LocalDate date) {
@@ -173,5 +177,13 @@ public class DiaryModel {
     
     public void setUser(UserModel user) {
         this.user = user;
+    }
+
+    public boolean isCalendarEmpty() {
+        return calendarEmpty == 1;
+    }
+
+    public void setCalendarEmpty(boolean calendarEmpty) {
+        this.calendarEmpty = calendarEmpty ? 1 : 0;
     }
 }

@@ -1,7 +1,9 @@
 package com.taskmanager.services;
 
 import com.taskmanager.database.CalendarEventDatabase;
+import com.taskmanager.database.DiaryDatabase;
 import com.taskmanager.models.CalendarEventModel;
+import com.taskmanager.models.DiaryModel;
 import com.taskmanager.services.GoogleCalendarService.CalendarEvent;
 import java.time.LocalDate;
 import java.time.Instant;
@@ -19,6 +21,8 @@ public class CalendarEventSyncService {
     private final CalendarEventDatabase eventDatabase;
     private GoogleCalendarService googleCalendarService;
     private String currentUserEmail;
+    private DiaryDatabase database = DiaryDatabase.getInstance();
+
     
     // 同步設定
     private static final long SYNC_INTERVAL_HOURS = 6; // 每6小時同步一次
@@ -47,6 +51,10 @@ public class CalendarEventSyncService {
         this.currentUserEmail = userEmail;
         try {
             this.googleCalendarService = new GoogleCalendarService(userEmail);
+            
+            // 清理重複事件
+            eventDatabase.removeDuplicateEvents(userEmail);
+            
             System.out.println("CalendarEventSyncService 已初始化，用戶: " + userEmail);
         } catch (Exception e) {
             System.err.println("初始化 CalendarEventSyncService 時發生錯誤: " + e.getMessage());
@@ -197,6 +205,8 @@ public class CalendarEventSyncService {
                     eventDate
                 );
                 
+                // 設置是否為整日事件
+                
                 dbEvents.add(dbEvent);
                 
             } catch (Exception e) {
@@ -245,8 +255,28 @@ public class CalendarEventSyncService {
             
             // 如果本地沒有，且用戶已授權，從 Google API 獲取
             if (googleCalendarService != null && googleCalendarService.isUserAuthorized()) {
+                // 先檢查是否已經標記為空
+                DiaryModel entry = database.getDiaryEntry(date, UserSession.getInstance().getCurrentUserEmail());
+                if (entry != null && entry.isCalendarEmpty()) {
+                    System.out.println("該日期已標記為空，跳過API呼叫");
+                    return new ArrayList<>();
+                }
+                
                 System.out.println("本地無資料，從 Google API 載入 " + date + " 的事件");
-                return googleCalendarService.getEventsForDate(date);
+                List<CalendarEvent> googleEvents = googleCalendarService.getEventsForDate(date);
+                
+                // 如果從 Google API 獲取的事件為空，標記該日期為空
+                if (googleEvents.isEmpty()) {
+                    if (entry == null) {
+                        entry = new DiaryModel(date);
+                        entry.setUser(database.getUserEntry(UserSession.getInstance().getCurrentUserEmail()));
+                    }
+                    entry.setCalendarEmpty(true);
+                    database.saveDiaryEntry(entry);
+                    System.out.println("該日期沒有事件，已標記為空");
+                }
+                
+                return googleEvents;
             }
             
             return new ArrayList<>();
@@ -265,17 +295,44 @@ public class CalendarEventSyncService {
         List<CalendarEvent> googleEvents = new ArrayList<>();
         
         for (CalendarEventModel dbEvent : dbEvents) {
+            // 根據時間判斷是否為整日事件
+            boolean isAllDay = isAllDayFromTimes(dbEvent.getStartTime(), dbEvent.getEndTime());
+            
             CalendarEvent googleEvent = 
                 new CalendarEvent(
                     dbEvent.getSummary(),
                     dbEvent.getDescription(),
                     dbEvent.getStartTime(),
-                    dbEvent.getEndTime()
+                    dbEvent.getEndTime(),
+                    isAllDay
                 );
             googleEvents.add(googleEvent);
         }
         
         return googleEvents;
+    }
+    
+    /**
+     * 根據開始和結束時間判斷是否為全天事件
+     */
+    private boolean isAllDayFromTimes(long startTime, long endTime) {
+        java.time.LocalDateTime startDateTime = java.time.LocalDateTime.ofInstant(
+                java.time.Instant.ofEpochMilli(startTime), 
+                java.time.ZoneId.systemDefault()
+        );
+        java.time.LocalDateTime endDateTime = java.time.LocalDateTime.ofInstant(
+                java.time.Instant.ofEpochMilli(endTime), 
+                java.time.ZoneId.systemDefault()
+        );
+        
+        java.time.LocalTime startTime_local = startDateTime.toLocalTime();
+        java.time.LocalTime endTime_local = endDateTime.toLocalTime();
+        
+        // Google Calendar 整日事件：開始時間是 08:00，結束時間也是 08:00
+        boolean googleAllDay = startTime_local.equals(java.time.LocalTime.of(8, 0)) &&
+                              endTime_local.equals(java.time.LocalTime.of(8, 0));
+        
+        return googleAllDay;
     }
     
     /**

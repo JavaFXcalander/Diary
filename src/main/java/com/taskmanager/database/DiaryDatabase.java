@@ -68,6 +68,7 @@ public class DiaryDatabase {
                 existingEntry.setSnack(entry.getSnack());
                 existingEntry.setAnynotes(entry.getAnynotes());
                 existingEntry.setTodo(entry.getTodo());
+                existingEntry.setCalendarEmpty(entry.isCalendarEmpty());
                
                 diaryDao.update(existingEntry);
             } else {

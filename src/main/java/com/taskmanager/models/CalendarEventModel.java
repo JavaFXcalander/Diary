@@ -3,9 +3,8 @@ package com.taskmanager.models;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-@DatabaseTable(tableName = "calendar_events")
+@DatabaseTable(tableName = "calendar")
 public class CalendarEventModel {
     
     @DatabaseField(generatedId = true)
@@ -37,6 +36,7 @@ public class CalendarEventModel {
     
     @DatabaseField
     private long updatedAt; // 更新時間
+    
     
     // 無參數建構子（ORMLite 需要）
     public CalendarEventModel() {
@@ -151,6 +151,8 @@ public class CalendarEventModel {
     public void setUpdatedAt(long updatedAt) {
         this.updatedAt = updatedAt;
     }
+    
+   
     
     @Override
     public String toString() {

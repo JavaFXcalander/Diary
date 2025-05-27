@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
+
 public class CalendarEventDatabase {
     private static CalendarEventDatabase instance;
     private ConnectionSource connectionSource;
@@ -43,19 +44,19 @@ public class CalendarEventDatabase {
     }
     
     /**
-     * 儲存或更新事件
+     * 儲存或更新事件（根據 summary + userEmail + eventDate 去重）
      */
     public void saveOrUpdateEvent(CalendarEventModel event) {
         try {
-            // 檢查是否已存在相同的 Google Event ID 和用戶
-            List<CalendarEventModel> existingEvents = calendarEventDao.queryForEq("googleEventId", event.getGoogleEventId());
-            existingEvents = existingEvents.stream()
+            // 先檢查是否已存在相同的 Google Event ID 和用戶
+            List<CalendarEventModel> existingEventsByGoogleId = calendarEventDao.queryForEq("googleEventId", event.getGoogleEventId());
+            existingEventsByGoogleId = existingEventsByGoogleId.stream()
                     .filter(e -> e.getUserEmail().equals(event.getUserEmail()))
                     .toList();
             
-            if (!existingEvents.isEmpty()) {
+            if (!existingEventsByGoogleId.isEmpty()) {
                 // 更新現有事件
-                CalendarEventModel existingEvent = existingEvents.get(0);
+                CalendarEventModel existingEvent = existingEventsByGoogleId.get(0);
                 existingEvent.setSummary(event.getSummary());
                 existingEvent.setDescription(event.getDescription());
                 existingEvent.setStartTime(event.getStartTime());
@@ -65,6 +66,30 @@ public class CalendarEventDatabase {
                 
                 calendarEventDao.update(existingEvent);
                 System.out.println("更新事件: " + existingEvent.getSummary());
+                return;
+            }
+            
+            // 檢查是否已存在相同的 summary + userEmail + eventDate 組合
+            List<CalendarEventModel> existingEventsBySummary = calendarEventDao.queryBuilder()
+                    .where()
+                    .eq("summary", event.getSummary())
+                    .and()
+                    .eq("userEmail", event.getUserEmail())
+                    .and()
+                    .eq("eventDate", event.getEventDate())
+                    .query();
+            
+            if (!existingEventsBySummary.isEmpty()) {
+                // 更新現有事件（根據 summary 找到的）
+                CalendarEventModel existingEvent = existingEventsBySummary.get(0);
+                existingEvent.setGoogleEventId(event.getGoogleEventId());
+                existingEvent.setDescription(event.getDescription());
+                existingEvent.setStartTime(event.getStartTime());
+                existingEvent.setEndTime(event.getEndTime());
+                existingEvent.setUpdatedAt(System.currentTimeMillis());
+                
+                calendarEventDao.update(existingEvent);
+                System.out.println("根據 summary 更新事件: " + existingEvent.getSummary());
             } else {
                 // 建立新事件
                 calendarEventDao.create(event);
@@ -198,6 +223,73 @@ public class CalendarEventDatabase {
         }
     }
     
+    /**
+     * 清理重複事件（根據 summary + userEmail + eventDate）
+     */
+    public void removeDuplicateEvents(String userEmail) {
+        try {
+            List<CalendarEventModel> allEvents = calendarEventDao.queryForEq("userEmail", userEmail);
+            
+            // 使用 Map 來追蹤已見過的事件組合
+            java.util.Map<String, CalendarEventModel> uniqueEvents = new java.util.HashMap<>();
+            java.util.List<CalendarEventModel> duplicatesToDelete = new java.util.ArrayList<>();
+            
+            for (CalendarEventModel event : allEvents) {
+                String key = event.getSummary() + "|" + event.getUserEmail() + "|" + event.getEventDate();
+                
+                if (uniqueEvents.containsKey(key)) {
+                    // 發現重複，保留較新的事件
+                    CalendarEventModel existing = uniqueEvents.get(key);
+                    if (event.getUpdatedAt() > existing.getUpdatedAt()) {
+                        // 新事件較新，刪除舊的
+                        duplicatesToDelete.add(existing);
+                        uniqueEvents.put(key, event);
+                    } else {
+                        // 舊事件較新，刪除新的
+                        duplicatesToDelete.add(event);
+                    }
+                } else {
+                    uniqueEvents.put(key, event);
+                }
+            }
+            
+            // 刪除重複事件
+            for (CalendarEventModel duplicate : duplicatesToDelete) {
+                calendarEventDao.delete(duplicate);
+            }
+            
+            System.out.println("已清理 " + duplicatesToDelete.size() + " 個重複事件");
+            
+        } catch (SQLException e) {
+            System.err.println("清理重複事件時發生錯誤: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 清理所有用戶的重複事件
+     */
+    public void removeAllDuplicateEvents() {
+        try {
+            // 獲取所有不同的用戶
+            List<CalendarEventModel> allEvents = calendarEventDao.queryForAll();
+            java.util.Set<String> userEmails = new java.util.HashSet<>();
+            
+            for (CalendarEventModel event : allEvents) {
+                userEmails.add(event.getUserEmail());
+            }
+            
+            // 為每個用戶清理重複事件
+            for (String userEmail : userEmails) {
+                removeDuplicateEvents(userEmail);
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("清理所有重複事件時發生錯誤: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 關閉資料庫連接
      */

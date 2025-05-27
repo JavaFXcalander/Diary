@@ -42,6 +42,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import com.taskmanager.timeline.TimeUtil;
 import com.taskmanager.services.CalendarEventSyncService;
+import com.taskmanager.controllers.ScheduleController;
 
 public class DiaryController implements TodoChangeListener {
 
@@ -52,7 +53,7 @@ public class DiaryController implements TodoChangeListener {
     @FXML private VBox todoContainer;
     @FXML private TodoController todoContainerController; // This will be automatically injected by JavaFX
     @FXML private Button addButton;
-    @FXML private TimeAxisPane timeAxisPane;
+    @FXML private ScheduleController scheduleController; // 注入schedule控制器
     
     private LocalDate currentDate = LocalDate.now();
     private DiaryDatabase database = DiaryDatabase.getInstance();
@@ -132,7 +133,8 @@ public class DiaryController implements TodoChangeListener {
             }
         });
         
-        setupContextMenu();
+        addMenu.getItems().addAll(addGoodleAPI);
+
         updateGoogleCalendarStatus();
 
         addButton.setOnMouseClicked(e -> {
@@ -144,11 +146,6 @@ public class DiaryController implements TodoChangeListener {
                 }
             }
         });
-
-        if (timeAxisPane != null) {
-            timeAxisPane.setOnContextMenuRequested(e -> 
-                addMenu.show(timeAxisPane, e.getScreenX(), e.getScreenY()));
-        }
     }
 
     private void setupBlurEventHandlers() {
@@ -368,90 +365,86 @@ public class DiaryController implements TodoChangeListener {
      * 載入指定日期的 Google Calendar 事件到時間軸
      */
     private void loadGoogleCalendarEvents(LocalDate date) {
-        if (timeAxisPane == null || syncService == null) {
+        if (syncService == null) {
             return;
         }
 
         try {
+            // 先檢查是否已經標記為空
+            DiaryModel entry = database.getDiaryEntry(date, UserSession.getInstance().getCurrentUserEmail());
+            if (entry != null && entry.isCalendarEmpty()) {
+                System.out.println("該日期已標記為空，跳過API呼叫");
+                return;
+            }
+
             List<GoogleCalendarService.CalendarEvent> events = syncService.getEventsForDate(date);
             
-            // 清除時間軸上現有的 Google Calendar 事件
-            clearGoogleCalendarEventsFromTimeline();
+            // 只處理整日事件，非整日事件交給ScheduleController處理
+            StringBuilder allDayEvents = new StringBuilder();
+            String currentAllDayText = priorityField.getText();
+            if (currentAllDayText != null && !currentAllDayText.trim().isEmpty()) {
+                allDayEvents.append(currentAllDayText).append("; ");
+            }
             
-            // 添加新的事件到時間軸
             for (GoogleCalendarService.CalendarEvent event : events) {
-                addEventToTimeline(event);
+                // 添加調試信息
+                java.time.LocalTime startTime = java.time.Instant.ofEpochMilli(event.getStartTime())
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toLocalTime();
+                java.time.LocalTime endTime = java.time.Instant.ofEpochMilli(event.getEndTime())
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toLocalTime();
+                
+                System.out.println("事件: " + event.getSummary() + 
+                                 " | 開始: " + startTime + 
+                                 " | 結束: " + endTime + 
+                                 " | 整日: " + event.isAllDay());
+                
+                if (event.isAllDay()) {
+                    // 整日事件加到 All day 欄位
+                    System.out.println("✅ 整日事件：" + event.getSummary());
+                    if (allDayEvents.length() > 0 && !allDayEvents.toString().endsWith("; ")) {
+                        allDayEvents.append("; ");
+                    }
+                    allDayEvents.append(event.getSummary());
+                } else {
+                    System.out.println("⏰ 非整日事件：" + event.getSummary() + " (" + startTime + "-" + endTime + ")");
+                }
+            }
+            
+            // 委託ScheduleController處理非整日事件（只調用一次）
+            if (scheduleController != null) {
+                scheduleController.loadGoogleCalendarEvents(date);
+            }
+            
+            // 更新整日行程欄位
+            if (allDayEvents.length() > 0) {
+                String finalText = allDayEvents.toString();
+                if (finalText.endsWith("; ")) {
+                    finalText = finalText.substring(0, finalText.length() - 2);
+                }
+                priorityField.setText(finalText);
+            }
+            
+            
+            // 如果沒有事件，標記為空
+            if (events.isEmpty()) {
+                if (entry == null) {
+                    entry = new DiaryModel(date);
+                    entry.setUser(database.getUserEntry(UserSession.getInstance().getCurrentUserEmail()));
+                }
+                entry.setCalendarEmpty(true);
+                database.saveDiaryEntry(entry);
+                System.out.println("該日期沒有事件，已標記為空");
             }
             
             // 在控制台顯示載入的事件數量
-            System.out.println("已載入 " + events.size() + " 個 Google Calendar 事件到時間軸");
+            System.out.println("DiaryController 已處理 " + events.size() + " 個 Google Calendar 事件");
             
         } catch (Exception e) {
             System.err.println("載入 Google Calendar 事件時發生錯誤: " + e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 清除時間軸上的 Google Calendar 事件
-     */
-    private void clearGoogleCalendarEventsFromTimeline() {
-        if (timeAxisPane == null) return;
-        
-        // 移除所有 TaskView（Google Calendar 事件）
-        timeAxisPane.getChildren().removeIf(node -> node instanceof TaskView);
-    }
-
-    /**
-     * 將 Google Calendar 事件添加到時間軸
-     */
-    private void addEventToTimeline(GoogleCalendarService.CalendarEvent event) {
-        if (timeAxisPane == null) return;
-
-        try {
-            // 轉換時間戳為 LocalTime
-            LocalTime startTime = Instant.ofEpochMilli(event.getStartTime())
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalTime();
-            
-            Duration duration = Duration.ofMillis(event.getEndTime() - event.getStartTime());
-            
-            // 檢查事件是否在時間軸顯示範圍內
-            if (isTimeInTimelineRange(startTime)) {
-                // 創建 TaskView 來顯示事件
-                TaskView eventView = new TaskView(event.getSummary(), startTime, duration);
-                
-                // 設置 Google Calendar 事件的特殊樣式
-                eventView.setStyle("-fx-background-color: #34a853; -fx-border-color: #2d8f47; -fx-border-width: 1; -fx-padding: 5px; -fx-background-radius: 3; -fx-border-radius: 3;");
-                
-                // 計算在時間軸上的位置和大小
-                double timelineHeight = timeAxisPane.getHeight();
-                double y = TimeUtil.toY(startTime, timelineHeight);
-                double height = (duration.toMinutes() / 60.0) * (timelineHeight / TimeUtil.TIMELINE_DURATION_HOURS);
-                
-                // 設置位置和大小
-                eventView.setLayoutX(40); // 留出時間標籤的空間
-                eventView.setLayoutY(y);
-                eventView.setPrefWidth(timeAxisPane.getWidth() - 50);
-                eventView.setPrefHeight(Math.max(height, 20)); // 最小高度 20px
-                
-                // 添加到時間軸
-                timeAxisPane.addTask(eventView);
-            }
-        } catch (Exception e) {
-            System.err.println("添加事件到時間軸時發生錯誤: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 檢查時間是否在時間軸顯示範圍內
-     */
-    private boolean isTimeInTimelineRange(LocalTime time) {
-        LocalTime startHour = TimeUtil.TIMELINE_VIEW_START_HOUR;
-        LocalTime endHour = startHour.plusHours(TimeUtil.TIMELINE_DURATION_HOURS);
-        
-        return !time.isBefore(startHour) && !time.isAfter(endHour);
     }
 
     private void updateGoogleCalendarStatus() {
@@ -471,44 +464,7 @@ public class DiaryController implements TodoChangeListener {
         this.hostServices = hostServices;
     }
 
-    private void setupContextMenu() {
-        // 添加重新整理快取的選項
-        MenuItem refreshCache = new MenuItem("重新整理Google行事曆");
-        refreshCache.setOnAction(ev -> {
-            if (syncService != null && googleCalendarService.isUserAuthorized()) {
-                syncService.manualSync();
-                // 重新載入當前日期的事件
-                loadGoogleCalendarEvents(currentDate);
-                
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Google行事曆");
-                alert.setHeaderText(null);
-                alert.setContentText("Google行事曆同步已觸發");
-                alert.showAndWait();
-            } else {
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Google行事曆");
-                alert.setHeaderText(null);
-                alert.setContentText("請先連結Google行事曆");
-                alert.showAndWait();
-            }
-        });
-
-        // 添加顯示同步狀態的選項
-        MenuItem showSyncStatus = new MenuItem("顯示同步狀態");
-        showSyncStatus.setOnAction(ev -> {
-            if (syncService != null) {
-                String syncStatus = syncService.getSyncStatus();
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Google行事曆同步狀態");
-                alert.setHeaderText(null);
-                alert.setContentText(syncStatus);
-                alert.showAndWait();
-            }
-        });
-
-        addMenu.getItems().addAll(addGoodleAPI, refreshCache, showSyncStatus);
-    }
+    
 }
 
    
