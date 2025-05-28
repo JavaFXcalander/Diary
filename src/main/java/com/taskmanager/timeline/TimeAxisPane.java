@@ -77,7 +77,7 @@ public class TimeAxisPane extends Pane {
         }
         
         // 計算任務的Y位置
-        double startY = TimeUtil.toY(task.getStartTime(), paneHeight) + 12;
+        double startY = TimeUtil.toY(task.getStartTime(), paneHeight) + 8;
         
         // 計算任務的高度（基於持續時間）
         long durationMinutes = task.getDuration().toMinutes();

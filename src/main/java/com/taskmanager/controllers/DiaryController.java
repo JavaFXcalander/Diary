@@ -32,17 +32,8 @@ import javafx.scene.control.Alert.AlertType;
 import java.security.GeneralSecurityException;
 import com.taskmanager.services.UserManager;
 import com.taskmanager.MainApp;
-import java.time.LocalDateTime;
 import java.util.List;
-import com.taskmanager.timeline.TaskView;
-import com.taskmanager.timeline.TimeAxisPane;
-import java.time.LocalTime;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZoneId;
-import com.taskmanager.timeline.TimeUtil;
 import com.taskmanager.services.CalendarEventSyncService;
-import com.taskmanager.controllers.ScheduleController;
 
 public class DiaryController implements TodoChangeListener {
 
@@ -54,6 +45,7 @@ public class DiaryController implements TodoChangeListener {
     @FXML private TodoController todoContainerController; // This will be automatically injected by JavaFX
     @FXML private Button addButton;
     @FXML private ScheduleController scheduleController; // 注入schedule控制器
+    @FXML private HabitController habitViewController; // 注入habit控制器
     
     private LocalDate currentDate = LocalDate.now();
     private DiaryDatabase database = DiaryDatabase.getInstance();
@@ -72,6 +64,13 @@ public class DiaryController implements TodoChangeListener {
         // 設置 TodoController 的變更監聽器
         if (todoContainerController != null) {
             todoContainerController.setChangeListener(this);
+        }
+        
+        // 檢查 HabitController 是否正確注入
+        System.err.println("HabitController 注入狀態: " + (habitViewController != null ? "成功" : "失敗"));
+        if (habitViewController != null) {
+            System.err.println("手動調用 HabitController.loadHabitData()");
+            habitViewController.loadHabitData(currentDate);
         }
         
         // 載入當天的日記內容
@@ -342,6 +341,11 @@ public class DiaryController implements TodoChangeListener {
 
             // 載入 Google Calendar 事件到時間軸
             loadGoogleCalendarEvents(date);
+            
+            // 載入 Habit Tracker 數據
+            if (habitViewController != null) {
+                habitViewController.loadHabitData(date);
+            }
             
         } catch (Exception e) {
             // 如果加载日记数据时出错，清空所有字段并显示空白页面

@@ -11,7 +11,7 @@
             <Insets top="20" right="20" bottom="20" left="20"/>
         </padding>
 
-        <Label fx:id="monthYearLabel" text="2025 April Project"  styleClass="title-label" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+        <Label fx:id="monthYearLabel"  styleClass="title-label" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
         <!-- Projects -->
         <GridPane hgap="0" vgap="0" GridPane.vgrow="ALWAYS">
@@ -44,7 +44,7 @@
                 <Label text="Check List" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass ="sub-text"/>
 
                 <!-- Row 3: About & Checklist Items -->
-                <TextArea promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="inner-field2"/>
+                <TextArea fx:id="about1" promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="inner-field2"/>
                 <VBox spacing="5" fx:id="taskContainer1" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="grid-cell2">
                     <HBox spacing="5"><CheckBox styleClass="check-box" /><TextField promptText="task" prefWidth="200" styleClass="inner-field"/></HBox>
                     <HBox spacing="5"><CheckBox styleClass="check-box"/><TextField promptText="task" prefWidth="200" styleClass="inner-field"/></HBox>
@@ -62,7 +62,7 @@
                 </columnConstraints>
 
                 <!-- Row 0: Project Name -->
-                <TextField promptText="project2" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0" styleClass="inner-field"/>
+                <TextField fx:id="project2" promptText="project2" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0" styleClass="inner-field"/>
 
                 <!-- Row 1: ProgressBar - 高度加大到30 -->
                 <ProgressBar fx:id="progressBar2" prefWidth="630" prefHeight="40" style="-fx-accent: #4CAF50; -fx-pref-height: 10px; -fx-min-height: 10px; -fx-max-height: 10px;" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
@@ -74,7 +74,7 @@
                 <Label text="Check List" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass ="sub-text"/>
 
                 <!-- Row 3: About & Checklist Items -->
-                <TextArea promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="inner-field2"/>
+                <TextArea fx:id="about2" promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="inner-field2"/>
                 <VBox spacing="5" fx:id="taskContainer2" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="grid-cell2">
                     <HBox spacing="5"><CheckBox styleClass="check-box" /><TextField promptText="task" prefWidth="200" styleClass="inner-field"/></HBox>
                     <HBox spacing="5"><CheckBox styleClass="check-box"/><TextField promptText="task" prefWidth="200" styleClass="inner-field"/></HBox>
@@ -93,7 +93,7 @@
                 </columnConstraints>
 
                 <!-- Row 0: Project Name -->
-                <TextField promptText="project3" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0" styleClass="inner-field"/>
+                <TextField fx:id="project3" promptText="project3" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0" styleClass="inner-field"/>
 
                 <!-- Row 1: ProgressBar - 高度加大到30 -->
                 <ProgressBar fx:id="progressBar3" prefWidth="630" prefHeight="40" style="-fx-accent: #4CAF50; -fx-pref-height: 10px; -fx-min-height: 10px; -fx-max-height: 10px;" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
@@ -105,7 +105,7 @@
                 <Label text="Check List" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass ="sub-text"/>
 
                 <!-- Row 3: About & Checklist Items -->
-                <TextArea promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="inner-field2"/>
+                <TextArea fx:id="about3" promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="inner-field2"/>
                 <VBox spacing="5" fx:id="taskContainer3" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="grid-cell2">
                     <HBox spacing="5"><CheckBox styleClass="check-box" /><TextField promptText="task" prefWidth="200" styleClass="inner-field"/></HBox>
                     <HBox spacing="5"><CheckBox styleClass="check-box"/><TextField promptText="task" prefWidth="200" styleClass="inner-field"/></HBox>
@@ -123,7 +123,7 @@
                 </columnConstraints>
 
                 <!-- Row 0: Project Name -->
-                <TextField promptText="project4" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0" styleClass="inner-field"/>
+                <TextField fx:id="project4" promptText="project4" GridPane.columnSpan="2" prefWidth="600" GridPane.rowIndex="0" styleClass="inner-field"/>
 
                 <!-- Row 1: ProgressBar - 高度加大到30 -->
                 <ProgressBar fx:id="progressBar4" prefWidth="630" prefHeight="40" style="-fx-accent: #4CAF50; -fx-pref-height: 10px; -fx-min-height: 10px; -fx-max-height: 10px;" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
@@ -135,7 +135,7 @@
                 <Label text="Check List" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass ="sub-text"/>
 
                 <!-- Row 3: About & Checklist Items -->
-                <TextArea promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="inner-field2"/>
+                <TextArea fx:id="about4" promptText="about" prefRowCount="4" prefWidth="400" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="inner-field2"/>
                 <VBox spacing="5" fx:id="taskContainer4" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="grid-cell2">
                     <HBox spacing="5"><CheckBox styleClass="check-box" /><TextField promptText="task" prefWidth="200" styleClass="inner-field"/></HBox>
                     <HBox spacing="5"><CheckBox styleClass="check-box"/><TextField promptText="task" prefWidth="200" styleClass="inner-field"/></HBox>
@@ -152,141 +152,141 @@
                     <VBox spacing="0" styleClass="grid-cell3">
                         <Label text="Project / date                      "  styleClass ="sub-text"/>
                         <Region prefHeight="9"/>
-                        <TextField promptText="project1" prefWidth="40" prefHeight="8"  styleClass="inner-field"/>
+                        <TextField fx:id="habit1" promptText="habit1" prefWidth="40" prefHeight="8"  styleClass="inner-field"/>
                         <Region prefHeight="10"/>
-                        <TextField promptText="project2" prefWidth="40" prefHeight="8" styleClass="inner-field"/>
+                        <TextField fx:id="habit2" promptText="habit2" prefWidth="40" prefHeight="8" styleClass="inner-field"/>
                         <Region prefHeight="10"/>
-                        <TextField promptText="project3" prefWidth="40" prefHeight="8"  styleClass="inner-field"/>
+                        <TextField fx:id="habit3" promptText="habit3" prefWidth="40" prefHeight="8"  styleClass="inner-field"/>
                         <Region prefHeight="10"/>
-                        <TextField promptText="project4" prefWidth="40" prefHeight="8"  styleClass="inner-field"/>
+                        <TextField fx:id="habit4" promptText="habit4" prefWidth="40" prefHeight="8"  styleClass="inner-field"/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer1" spacing="13" styleClass="grid-cell2">
                         <Label text=" 1" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer2" spacing="13" styleClass="grid-cell2">
                         <Label text=" 2" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer3" spacing="13" styleClass="grid-cell2">
                         <Label text=" 3" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer4" spacing="13" styleClass="grid-cell2">
                         <Label text=" 4" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer5" spacing="13" styleClass="grid-cell2">
                         <Label text=" 5" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer6" spacing="13" styleClass="grid-cell2">
                         <Label text=" 6" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer7" spacing="13" styleClass="grid-cell2">
                         <Label text=" 7" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer8" spacing="13" styleClass="grid-cell2">
                         <Label text=" 8" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer9" spacing="13" styleClass="grid-cell2">
                         <Label text=" 9" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer10" spacing="13" styleClass="grid-cell2">
                         <Label text="10" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer11" spacing="13" styleClass="grid-cell2">
                         <Label text="11" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer12" spacing="13" styleClass="grid-cell2">
                         <Label text="12" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer13" spacing="13" styleClass="grid-cell2">
                         <Label text="13" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer14" spacing="13" styleClass="grid-cell2">
                         <Label text="14" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer15" spacing="13" styleClass="grid-cell2">
                         <Label text="15" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer16" spacing="13" styleClass="grid-cell2">
                         <Label text="16" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer17" spacing="13" styleClass="grid-cell2">
                         <Label text="17" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer18" spacing="13" styleClass="grid-cell2">
                         <Label text="18" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer19" spacing="13" styleClass="grid-cell2">
                         <Label text="19" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
@@ -300,77 +300,77 @@
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer21" spacing="13" styleClass="grid-cell2">
                         <Label text="21" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer22" spacing="13" styleClass="grid-cell2">
                         <Label text="22" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer23" spacing="13" styleClass="grid-cell2">
                         <Label text="23" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer24" spacing="13" styleClass="grid-cell2">
                         <Label text="24" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer25" spacing="13" styleClass="grid-cell2">
                         <Label text="25" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer26" spacing="13" styleClass="grid-cell2">
                         <Label text="26" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer27" spacing="13" styleClass="grid-cell2">
                         <Label text="27" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer28" spacing="13" styleClass="grid-cell2">
                         <Label text="28" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer29" spacing="13" styleClass="grid-cell2">
                         <Label text="29" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer30" spacing="13" styleClass="grid-cell2">
                         <Label text="30" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                         <CheckBox/>
                     </VBox>
-                    <VBox spacing="13" styleClass="grid-cell2">
+                    <VBox fx:id="dayContainer31" spacing="13" styleClass="grid-cell2">
                         <Label text="31" styleClass="number-label"/> 
                         <CheckBox/>
                         <CheckBox/>

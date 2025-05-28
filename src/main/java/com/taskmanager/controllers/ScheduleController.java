@@ -199,8 +199,8 @@ public class ScheduleController implements Initializable {
                           ", 檢查時間: " + time);
         
         // 檢查時間是否在範圍內
-        boolean inRange = !time.isBefore(startHour) && !time.isAfter(endHour);
+            boolean inRange = !time.isBefore(startHour) && !time.isAfter(endHour);
         System.out.println("範圍檢查: " + startHour + " <= " + time + " <= " + endHour + " = " + inRange);
-        return inRange;
+            return inRange;
     }
 }

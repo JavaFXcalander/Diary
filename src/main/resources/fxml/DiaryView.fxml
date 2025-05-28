@@ -166,7 +166,7 @@
                 </VBox>
 
                 <!-- Habit Tracker -->
-                <fx:include source="HabitView.fxml" GridPane.columnIndex="1" prefHeight="237"/>
+                <fx:include fx:id="habitView" source="HabitView.fxml" GridPane.columnIndex="1" prefHeight="237"/>
 
             </GridPane>
 

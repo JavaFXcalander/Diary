@@ -11,4 +11,4 @@
     <VBox fx:id="habitTracker" spacing="4" styleClass="grid-bg">
         <!-- Rows will be added dynamically by the controller -->
     </VBox>
-</VBox> 
+</VBox>

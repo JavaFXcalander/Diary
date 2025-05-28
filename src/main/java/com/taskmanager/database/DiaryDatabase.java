@@ -134,32 +134,39 @@ public class DiaryDatabase {
     }
 
     // 專案相關操作
-    public void saveProject(ProjectModel project) {
+    public void saveProject(ProjectModel project , String userEmail) {
         try {
+            UserModel user = getUserEntry(userEmail);
+            if (user == null) throw new RuntimeException("User not found");
+
+            project.setUser(user); // 确保关联用户
+
             List<ProjectModel> existingProjects = projectDao.queryBuilder()
             .where()
-            .eq("year", project.getYear())  // 條件1：年份匹配
-            .and()                       // 邏輯"且"
-            .eq("month", project.getMonth()) // 條件2：月份匹配
-            .query();                    // 執行查詢
+            .eq("year", project.getYear())
+            .and()
+            .eq("month", project.getMonth())
+            .and()
+            .eq("user_id", user.getId())
+            .query();
 
-            ProjectModel existingProject = existingProjects.get(0);
-            if (existingProject != null) {
+           if (!existingProjects.isEmpty()) {
+                ProjectModel existingProject = existingProjects.get(0);
                 existingProject.setProject1(project.getProject1());
-                // existingProject.setProject2(project.getProject2());
-                // existingProject.setProject3(project.getProject3());
-                // existingProject.setProject4(project.getProject4());
-                // existingProject.setAbout1(project.getAbout1());
-                // existingProject.setAbout2(project.getAbout2());
-                // existingProject.setAbout3(project.getAbout3());
-                // existingProject.setAbout4(project.getAbout4());
-                // existingProject.setHabit1(project.getHabit1());
-                // existingProject.setHabit2(project.getHabit2());
-                // existingProject.setHabit3(project.getHabit3());
-                // existingProject.setHabit4(project.getHabit4());
+                existingProject.setProject2(project.getProject2());
+                existingProject.setProject3(project.getProject3());
+                existingProject.setProject4(project.getProject4());
+                existingProject.setAbout1(project.getAbout1());
+                existingProject.setAbout2(project.getAbout2());
+                existingProject.setAbout3(project.getAbout3());
+                existingProject.setAbout4(project.getAbout4());
+                existingProject.setHabit1(project.getHabit1());
+                existingProject.setHabit2(project.getHabit2());
+                existingProject.setHabit3(project.getHabit3());
+                existingProject.setHabit4(project.getHabit4());
+                existingProject.setDailyChecks(project.getDailyChecks());
                 projectDao.update(existingProject);
             } else {
-                // 如果不存在，創建新的專案
                 projectDao.create(project);
             }
         } catch (SQLException e) {
@@ -167,16 +174,20 @@ public class DiaryDatabase {
         }
     }
 
-    public ProjectModel getProjectEntry(int year, int month) {
-    try {
-        List<ProjectModel> projects = projectDao.queryBuilder()
-            .where()
-            .eq("year", year)
-            .and()
-            .eq("month", month)
-            .query();
-        
-        return projects.isEmpty() ? null : projects.get(0);
+    public ProjectModel getProjectEntry(int year, int month, String userEmail) {
+        try {
+            UserModel user = getUserEntry(userEmail);
+            if (user == null) return null;
+            List<ProjectModel> projects = projectDao.queryBuilder()
+                .where()
+                .eq("year", year)
+                .and()
+                .eq("month", month)
+                .and()
+                .eq("user_id", user.getId())
+                .query();
+
+            return projects.isEmpty() ? null : projects.get(0);
         } catch (SQLException e) {
             throw new RuntimeException("Failed to get project entry", e);
         }
