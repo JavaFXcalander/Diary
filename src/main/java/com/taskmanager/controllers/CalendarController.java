@@ -21,8 +21,12 @@ import java.io.IOException;
 import com.taskmanager.services.GoogleCalendarService;
 import com.taskmanager.services.CalendarEventSyncService;
 import com.taskmanager.services.UserManager;
+import com.taskmanager.services.MoodleService;
 import java.security.GeneralSecurityException;
 import java.util.List;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Tooltip;
 
 public class CalendarController {
 
@@ -41,6 +45,7 @@ public class CalendarController {
     private LocalDate currentDate;
     private GoogleCalendarService googleCalendarService;
     private CalendarEventSyncService syncService;
+    private MoodleService moodleService;
     
     public void initialize() {
         // 初始化為當前日期
@@ -53,13 +58,25 @@ public class CalendarController {
             syncService = CalendarEventSyncService.getInstance();
             syncService.initialize(userEmail);
             
+            // 初始化 Moodle 服務
+            moodleService = MoodleService.getInstance();
+            
+            // 嘗試自動恢復 Moodle 登錄狀態
+            try {
+                if (moodleService.autoRestoreLogin(userEmail)) {
+                    System.out.println("CalendarController: 自動恢復Moodle登錄成功");
+                }
+            } catch (Exception e) {
+                System.err.println("CalendarController: 自動恢復Moodle登錄失敗: " + e.getMessage());
+            }
+            
             // 如果已授權，啟動同步服務
             if (googleCalendarService.isUserAuthorized()) {
                 syncService.startPeriodicSync();
                 System.out.println("CalendarController: 已啟動 Google Calendar 同步服務");
             }
         } catch (Exception e) {
-            System.err.println("無法初始化 Google Calendar 服務: " + e.getMessage());
+            System.err.println("無法初始化 Calendar 服務: " + e.getMessage());
         }
         
         // 設置按鈕動態效果
@@ -219,8 +236,8 @@ public class CalendarController {
             dateLabel.getStyleClass().add("today-label");
         }
 
-        // 檢查並顯示 Google Calendar 事件
-        addGoogleCalendarEventsToCell(cell, cellDate);
+        // 檢查並顯示 Google Calendar 和 Moodle 事件
+        addEventsToCell(cell, cellDate);
         
         // 添加滑鼠懸停效果
         String baseStyle = cell.getStyle();
@@ -238,47 +255,99 @@ public class CalendarController {
     }
 
     /**
-     * 在日曆格子中添加 Google Calendar 事件指示器
+     * 在日曆格子中添加 Google Calendar 和 Moodle 事件指示器
      */
-    private void addGoogleCalendarEventsToCell(VBox cell, LocalDate date) {
-        if (syncService == null) return;
-
-        try {
-            List<GoogleCalendarService.CalendarEvent> events = syncService.getEventsForDate(date);
+    private void addEventsToCell(VBox cell, LocalDate date) {
+        List<GoogleCalendarService.CalendarEvent> googleEvents = null;
+        List<MoodleService.MoodleEvent> moodleEvents = null;
+        
+        // 獲取 Google Calendar 事件
+        if (syncService != null) {
+            try {
+                googleEvents = syncService.getEventsForDate(date);
+            } catch (Exception e) {
+                System.err.println("載入 Google Calendar 事件時發生錯誤 (" + date + "): " + e.getMessage());
+            }
+        }
+        
+        // 獲取 Moodle 事件
+        if (moodleService != null) {
+            try {
+                String userEmail = UserManager.getInstance().getCurrentUser().getEmail();
+                moodleEvents = moodleService.getCalendarEventsWithCache(date, userEmail);
+                // 過濾出當天的事件
+                if (moodleEvents != null) {
+                    moodleEvents = moodleEvents.stream()
+                            .filter(event -> {
+                                LocalDate eventDate = LocalDate.ofEpochDay(event.getTimestart() / 86400);
+                                return eventDate.equals(date);
+                            })
+                            .collect(java.util.stream.Collectors.toList());
+                }
+            } catch (Exception e) {
+                System.err.println("載入 Moodle 事件時發生錯誤 (" + date + "): " + e.getMessage());
+            }
+        }
+        
+        // 計算總事件數
+        int googleEventCount = (googleEvents != null) ? googleEvents.size() : 0;
+        int moodleEventCount = (moodleEvents != null) ? moodleEvents.size() : 0;
+        int totalEvents = googleEventCount + moodleEventCount;
+        
+        if (totalEvents > 0) {
+            // 創建事件指示器容器
+            VBox eventContainer = new VBox(1);
+            eventContainer.setAlignment(Pos.BOTTOM_LEFT);
+            eventContainer.setPrefWidth(Double.MAX_VALUE);
             
-            if (!events.isEmpty()) {
-                // 創建事件指示器容器
-                VBox eventContainer = new VBox(1);
-                eventContainer.setAlignment(Pos.BOTTOM_LEFT);
-                eventContainer.setPrefWidth(Double.MAX_VALUE);
-                
-                // 最多顯示 3 個事件，如果更多則顯示 "..."
-                int maxEventsToShow = Math.min(events.size(), 3);
-                
-                for (int i = 0; i < maxEventsToShow; i++) {
-                    GoogleCalendarService.CalendarEvent event = events.get(i);
+            // 最多顯示 3 個事件
+            int maxEventsToShow = Math.min(totalEvents, 3);
+            int eventsShown = 0;
+            
+            // 先顯示 Google Calendar 事件（綠色）
+            if (googleEvents != null && eventsShown < maxEventsToShow) {
+                for (GoogleCalendarService.CalendarEvent event : googleEvents) {
+                    if (eventsShown >= maxEventsToShow) break;
+                    
                     Label eventLabel = new Label(truncateText(event.getSummary(), 12));
                     eventLabel.setStyle("-fx-background-color: #637a60; -fx-text-fill: white; " +
                                       "-fx-font-size: 8px; -fx-padding: 1px 3px; " +
                                       "-fx-background-radius: 2px; -fx-max-width: 90px;");
                     eventContainer.getChildren().add(eventLabel);
+                    eventsShown++;
                 }
-                
-                // 如果有更多事件，顯示 "..."
-                if (events.size() > 3) {
-                    Label moreLabel = new Label("+" + (events.size() - 3) + " more");
-                    moreLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 7px;");
-                    eventContainer.getChildren().add(moreLabel);
-                }
-                
-                cell.getChildren().add(eventContainer);
             }
-        } catch (Exception e) {
-            // 靜默處理錯誤，不影響日曆顯示
-            System.err.println("載入日曆事件時發生錯誤 (" + date + "): " + e.getMessage());
+            
+            // 再顯示 Moodle 事件（根據繳交狀態顯示不同顏色）
+            if (moodleEvents != null && eventsShown < maxEventsToShow) {
+                for (MoodleService.MoodleEvent event : moodleEvents) {
+                    if (eventsShown >= maxEventsToShow) break;
+                    
+                    Label eventLabel = new Label(truncateText(event.getName(), 12));
+                    String backgroundColor = event.getStatusColor();
+                    eventLabel.setStyle(String.format("-fx-background-color: %s; -fx-text-fill: white; " +
+                                      "-fx-font-size: 8px; -fx-padding: 1px 3px; " +
+                                      "-fx-background-radius: 2px; -fx-max-width: 90px;", backgroundColor));
+                    
+                    // 添加工具提示顯示狀態
+                    Tooltip tooltip = new Tooltip(String.format("%s - %s", event.getDisplayText(), event.getStatusDescription()));
+                    Tooltip.install(eventLabel, tooltip);
+                    
+                    eventContainer.getChildren().add(eventLabel);
+                    eventsShown++;
+                }
+            }
+            
+            // 如果有更多事件，顯示 "..."
+            if (totalEvents > 3) {
+                Label moreLabel = new Label("+" + (totalEvents - 3) + " more");
+                moreLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 7px;");
+                eventContainer.getChildren().add(moreLabel);
+            }
+            
+            cell.getChildren().add(eventContainer);
         }
     }
-
 
     private String truncateText(String text, int maxLength) {
         if (text == null) return "";
@@ -308,15 +377,15 @@ public class CalendarController {
     }
 
     @FXML
-    private void handleDiaryButton(ActionEvent event) throws IOException {
-        Parent diaryRoot = FXMLLoader.load(getClass().getResource("/fxml/DiaryView.fxml"));
+    private void handleProjectButton(ActionEvent event) throws IOException {
+        Parent diaryRoot = FXMLLoader.load(getClass().getResource("/fxml/project.fxml"));
         Scene scene = ((Node) event.getSource()).getScene();
         scene.setRoot(diaryRoot);
     }
 
     @FXML
-    private void handleProjectButton(ActionEvent event) throws IOException {
-        Parent diaryRoot = FXMLLoader.load(getClass().getResource("/fxml/project.fxml"));
+    private void handleDiaryButton(ActionEvent event) throws IOException {
+        Parent diaryRoot = FXMLLoader.load(getClass().getResource("/fxml/DiaryView.fxml"));
         Scene scene = ((Node) event.getSource()).getScene();
         scene.setRoot(diaryRoot);
     }
@@ -324,6 +393,13 @@ public class CalendarController {
     public void setMonthAndYear(int month, int year) {
         this.currentDate = LocalDate.of(year, month, 1); // 確保 currentDate 被正確設置為完整的 LocalDate
         updateCalendar();
+    }
+    
+    /**
+     * 檢查 Moodle 是否已配置
+     */
+    public boolean isMoodleConfigured() {
+        return moodleService != null && moodleService.getWstoken() != null;
     }
 
 }

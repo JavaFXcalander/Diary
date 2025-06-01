@@ -22,6 +22,7 @@
                 <Button fx:id="nextButton" text="Next" styleClass="nav-button" />
             </HBox>
         </VBox>
+        
     </top>
 
     <!-- Center: Calendar Grid -->

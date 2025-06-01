@@ -32,6 +32,8 @@ public class DiaryDatabase {
             TableUtils.createTableIfNotExists(connectionSource, UserModel.class);
             TableUtils.createTableIfNotExists(connectionSource, ProjectModel.class);
             
+            // 執行資料庫遷移
+            
             // 初始化 DAO
             diaryDao = DaoManager.createDao(connectionSource, DiaryModel.class);
             userDao = DaoManager.createDao(connectionSource, UserModel.class);
@@ -110,8 +112,23 @@ public class DiaryDatabase {
     // 日記相關操作
     public void saveUserEntry(UserModel entry) {
         try {
+            // 檢查用戶是否已存在
+            UserModel existingUser = getUserEntry(entry.getEmail());
             
-            userDao.create(entry);
+            if (existingUser != null) {
+                // 如果用戶已存在，更新現有用戶的信息
+                existingUser.setHashedPassword(entry.getHashedPassword());
+                existingUser.setMoodleToken(entry.getMoodleToken());
+                existingUser.setMoodleUsername(entry.getMoodleUsername());
+                existingUser.setMoodleLastLoginTime(entry.getMoodleLastLoginTime());
+                
+                userDao.update(existingUser);
+                System.out.println("已更新用戶信息: " + entry.getEmail());
+            } else {
+                // 如果用戶不存在，創建新用戶
+                userDao.create(entry);
+                System.out.println("已創建新用戶: " + entry.getEmail());
+            }
         } catch (SQLException e) {
             // Wrap SQLException in a RuntimeException to simplify error handling upstream,
             // consistent with other database operations in this class.
@@ -129,6 +146,11 @@ public class DiaryDatabase {
             }
             return null;
         } catch (SQLException e) {
+            // 如果是因為字段不存在的錯誤，說明需要資料庫遷移
+            if (e.getMessage().contains("Column") && e.getMessage().contains("not found")) {
+                System.err.println("資料庫結構問題，需要重新啟動應用程序進行遷移: " + e.getMessage());
+                return null;
+            }
             throw new RuntimeException("Failed to get user entry for email: " + email, e);
         }
     }
@@ -198,7 +220,11 @@ public class DiaryDatabase {
                 connectionSource.close();
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to close database connection", e);
+            System.err.println("Failed to close database connection: " + e.getMessage());
         }
     }
+    
+    
+    
+    
 }

@@ -135,14 +135,14 @@ public class HabitController {
         if (dailyChecks != null) {
             boolean[] checks = dailyChecks.getOrDefault(currentDay, new boolean[4]);
             if (i >= 0 && i < checks.length) {
-                checkBox.setSelected(checks[i]);
+                    checkBox.setSelected(checks[i]);
                 System.err.println("設置 habit " + i + " 的狀態為: " + checks[i]);
-            }
+                }
         }
         
         // 設置 CheckBox 的事件監聽器
         checkBox.setOnAction(event -> saveProjectEntry());
-        
+           
         TextField tf = new TextField();
         tf.setText(habitText);
         tf.setPromptText("Habit…");
@@ -152,7 +152,7 @@ public class HabitController {
         HBox row = new HBox(6, checkBox, tf);
         return row;
     }
-    
+
     private void saveProjectEntry() {
         // 首先获取现有的ProjectModel，保持其他数据不变
         UserSession userSession = UserSession.getInstance();
@@ -188,20 +188,20 @@ public class HabitController {
         }
         
         // 只更新當前天的勾選狀態
-        boolean[] checks = new boolean[4];
+                 boolean[] checks = new boolean[4];
         for (int i = 0; i < habitTracker.getChildren().size() && i < 4; i++) {
             if (habitTracker.getChildren().get(i) instanceof HBox) {
                 HBox row = (HBox) habitTracker.getChildren().get(i);
                 if (row.getChildren().size() > 0 && row.getChildren().get(0) instanceof CheckBox) {
                     CheckBox checkBox = (CheckBox) row.getChildren().get(0);
-                    checks[i] = checkBox.isSelected();
+                     checks[i] = checkBox.isSelected();
                 }
             }
-        }
-        dailyChecks.put(currentDay, checks);
-        
-        return dailyChecks;
-    }
+                 }
+                 dailyChecks.put(currentDay, checks);
+     
+         return dailyChecks;
+     }
         
     
 }

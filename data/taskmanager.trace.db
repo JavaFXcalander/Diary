@@ -1,0 +1,180 @@
+2025-05-31 21:43:22.297479+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:22.954336+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:25.740705+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:29.034133+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:32.348715+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:35.748165+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:39.083721+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:42.715278+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:46.556571+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:50.193833+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:53.965959+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:43:57.789960+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:01.478136+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:05.184678+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:09.090592+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:12.786346+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:16.627669+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:20.413522+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:24.160347+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:27.948432+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:31.515831+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:35.428508+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:39.308036+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:43.306696+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:47.367864+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:51.563737+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:44:55.875307+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:45:00.214427+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:45:04.245774+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:45:08.133619+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:45:11.575052+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:45:15.176163+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:19.893316+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:24.008181+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:24.452579+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:27.740657+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:31.804000+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:35.206198+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:39.078486+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:42.889475+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:46.756388+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:50.628915+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:54.399742+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:46:58.292448+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:02.448788+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:06.104614+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:10.121866+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:14.127795+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:17.993422+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:21.880160+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:25.576231+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:29.390517+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:33.290687+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:37.004772+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:40.623851+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:44.224617+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:47.717898+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:51.218302+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:54.816067+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]
+2025-05-31 21:47:58.431808+08:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "DESCRIPTION CHARACTER VARYING(255)": "U&'<p dir=""ltr"" style=""text-align:left;""></p><h5><strong>\\4f5c\\696d\\7e73\\4ea4\\8a... (607)"; SQL statement:
+INSERT INTO `moodle` (`username` ,`password` ,`userEmail` ,`name` ,`description` ,`timestart` ,`url` ,`courseName` ,`courseId` ,`assignmentId` ,`submissionStatus` ,`eventDate` ,`createdAt` ,`updatedAt` ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) [22001-224]

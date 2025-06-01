@@ -16,6 +16,16 @@ public class UserModel {
 
     @DatabaseField
     private String hashedPassword;
+    
+    // Moodle 憑證字段
+    @DatabaseField
+    private String moodleToken;
+    
+    @DatabaseField
+    private String moodleUsername;
+    
+    @DatabaseField
+    private long moodleLastLoginTime;
 
     public UserModel() {
         // ORMLite 需要一個無參構造器
@@ -44,5 +54,46 @@ public class UserModel {
 
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
+    }
+    
+    // Moodle 憑證相關方法
+    public String getMoodleToken() {
+        return moodleToken;
+    }
+    
+    public void setMoodleToken(String moodleToken) {
+        this.moodleToken = moodleToken;
+    }
+    
+    public String getMoodleUsername() {
+        return moodleUsername;
+    }
+    
+    public void setMoodleUsername(String moodleUsername) {
+        this.moodleUsername = moodleUsername;
+    }
+    
+    public long getMoodleLastLoginTime() {
+        return moodleLastLoginTime;
+    }
+    
+    public void setMoodleLastLoginTime(long moodleLastLoginTime) {
+        this.moodleLastLoginTime = moodleLastLoginTime;
+    }
+    
+    /**
+     * 檢查Moodle憑證是否已配置
+     */
+    public boolean hasMoodleCredentials() {
+        return moodleToken != null && !moodleToken.trim().isEmpty();
+    }
+    
+    /**
+     * 清除Moodle憑證
+     */
+    public void clearMoodleCredentials() {
+        this.moodleToken = null;
+        this.moodleUsername = null;
+        this.moodleLastLoginTime = 0;
     }
 }

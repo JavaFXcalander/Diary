@@ -55,6 +55,9 @@ public class CalendarEventSyncService {
             // 清理重複事件
             eventDatabase.removeDuplicateEvents(userEmail);
             
+            // 清理斯里蘭卡事件在錯誤日期的記錄（臨時修復）
+            eventDatabase.cleanupIncorrectEventRecords(userEmail, "斯里蘭卡", LocalDate.of(2025, 6, 30));
+            
             System.out.println("CalendarEventSyncService 已初始化，用戶: " + userEmail);
         } catch (Exception e) {
             System.err.println("初始化 CalendarEventSyncService 時發生錯誤: " + e.getMessage());
@@ -165,10 +168,7 @@ public class CalendarEventSyncService {
             
             // 儲存到本地資料庫
             eventDatabase.saveEvents(dbEvents);
-            
-            // 清理舊事件
-            eventDatabase.deleteOldEvents(currentUserEmail, startDate);
-            
+                        
             lastSyncTime = System.currentTimeMillis();
             
             System.out.println("同步完成，共處理 " + dbEvents.size() + " 個事件");
@@ -187,30 +187,52 @@ public class CalendarEventSyncService {
         
         for (CalendarEvent googleEvent : googleEvents) {
             try {
-                // 計算事件日期
-                LocalDate eventDate = Instant.ofEpochMilli(googleEvent.getStartTime())
+                // 計算事件的開始和結束日期
+                LocalDate startDate = Instant.ofEpochMilli(googleEvent.getStartTime())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                        
+                LocalDate endDate = Instant.ofEpochMilli(googleEvent.getEndTime())
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
                 
-                // 生成唯一的 Google Event ID（如果沒有的話）
-                String googleEventId = generateEventId(googleEvent);
+                // 檢查是否為整日事件
+                boolean isAllDay = isAllDayFromTimes(googleEvent.getStartTime(), googleEvent.getEndTime());
                 
-                CalendarEventModel dbEvent = new CalendarEventModel(
-                    googleEventId,
-                    currentUserEmail,
-                    googleEvent.getSummary(),
-                    googleEvent.getDescription(),
-                    googleEvent.getStartTime(),
-                    googleEvent.getEndTime(),
-                    eventDate
-                );
+                // 對於整日事件，Google Calendar的結束時間是下一天的開始時間
+                // 我們需要減去一天來獲得實際的結束日期
+                if (isAllDay && !startDate.equals(endDate)) {
+                    endDate = endDate.minusDays(1);
+                }
                 
-                // 設置是否為整日事件
+                System.out.println("事件: " + googleEvent.getSummary() + 
+                                 " | 開始日期: " + startDate + 
+                                 " | 結束日期: " + endDate + 
+                                 " | 整日事件: " + isAllDay);
                 
-                dbEvents.add(dbEvent);
+                // 對於跨日事件，為每一天都創建一個記錄
+                LocalDate currentDate = startDate;
+                while (!currentDate.isAfter(endDate)) {
+                    // 為每一天生成唯一的 Google Event ID
+                    String googleEventId = generateEventIdWithDate(googleEvent, currentDate);
+                    
+                    CalendarEventModel dbEvent = new CalendarEventModel(
+                        googleEventId,
+                        currentUserEmail,
+                        googleEvent.getSummary(),
+                        googleEvent.getDescription(),
+                        googleEvent.getStartTime(),
+                        googleEvent.getEndTime(),
+                        currentDate
+                    );
+                    
+                    dbEvents.add(dbEvent);
+                    currentDate = currentDate.plusDays(1);
+                }
                 
             } catch (Exception e) {
                 System.err.println("轉換事件時發生錯誤: " + e.getMessage());
+                e.printStackTrace();
             }
         }
         
@@ -226,18 +248,11 @@ public class CalendarEventSyncService {
     }
     
     /**
-     * 手動觸發同步
+     * 生成帶日期的事件 ID（用於跨日事件）
      */
-    public void manualSync() {
-        CompletableFuture.runAsync(() -> {
-            try {
-                System.out.println("手動觸發同步...");
-                syncEvents();
-            } catch (Exception e) {
-                System.err.println("手動同步時發生錯誤: " + e.getMessage());
-                e.printStackTrace();
-            }
-        });
+    private String generateEventIdWithDate(CalendarEvent event, LocalDate date) {
+        String content = event.getSummary() + "_" + event.getStartTime() + "_" + event.getEndTime() + "_" + date.toString();
+        return String.valueOf(content.hashCode());
     }
     
     /**
@@ -274,6 +289,13 @@ public class CalendarEventSyncService {
                     entry.setCalendarEmpty(true);
                     database.saveDiaryEntry(entry);
                     System.out.println("該日期沒有事件，已標記為空");
+                } else {
+                    // 有事件時，保存到本地資料庫
+                    List<CalendarEventModel> dbEventsToSave = convertToDbEvents(googleEvents);
+                    if (!dbEventsToSave.isEmpty()) {
+                        eventDatabase.saveEvents(dbEventsToSave);
+                        System.out.println("已保存 " + dbEventsToSave.size() + " 個事件到本地資料庫");
+                    }
                 }
                 
                 return googleEvents;

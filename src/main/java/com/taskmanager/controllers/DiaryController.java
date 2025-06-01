@@ -23,9 +23,14 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Optional;
+import com.taskmanager.services.MoodleService;
+
 import com.taskmanager.services.UserSession;
 import com.taskmanager.models.UserModel;
 import com.taskmanager.services.GoogleCalendarService;
+import com.taskmanager.services.MoodleService;
+
 import javafx.application.HostServices;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -34,6 +39,12 @@ import com.taskmanager.services.UserManager;
 import com.taskmanager.MainApp;
 import java.util.List;
 import com.taskmanager.services.CalendarEventSyncService;
+import com.taskmanager.controllers.MoodleConfigDialog;
+import javafx.application.Platform;
+import com.taskmanager.services.UserManager;
+import java.util.ArrayList;
+import com.taskmanager.models.MoodleModel;
+import com.taskmanager.database.CalendarEventDatabase;
 
 public class DiaryController implements TodoChangeListener {
 
@@ -51,9 +62,13 @@ public class DiaryController implements TodoChangeListener {
     private DiaryDatabase database = DiaryDatabase.getInstance();
     private ContextMenu addMenu;
     private GoogleCalendarService googleCalendarService;
+    private MoodleService moodleService;
+
     private CalendarEventSyncService syncService;
     private HostServices hostServices;
-    private MenuItem addGoodleAPI;
+    private MenuItem addGoogleAPI;
+    private MenuItem addMoodleAPI;
+
 
     @FXML
     public void initialize() {
@@ -84,13 +99,59 @@ public class DiaryController implements TodoChangeListener {
         googleCalendarService = new GoogleCalendarService(userEmail);
         syncService = CalendarEventSyncService.getInstance();
         syncService.initialize(userEmail);
+        moodleService = MoodleService.getInstance();
+        
+        // 嘗試自動恢復 Moodle 登錄狀態
+        try {
+            if (moodleService.autoRestoreLogin(userEmail)) {
+                System.out.println("自動恢復Moodle登錄成功");
+                
+                // 檢查是否需要同步（24小時內未同步過）
+                CalendarEventDatabase eventDb = CalendarEventDatabase.getInstance();
+                long lastUpdate = eventDb.getMoodleLastUpdateTime(userEmail);
+                long timeSinceLastUpdate = System.currentTimeMillis() - lastUpdate;
+                long CACHE_DURATION = 24 * 60 * 60 * 1000; // 24小時
+                
+                if (timeSinceLastUpdate > CACHE_DURATION) {
+                    System.out.println("開始背景同步 Moodle 事件 (上次更新: " + (timeSinceLastUpdate / (60 * 60 * 1000)) + " 小時前)");
+                    
+                    // 在背景同步當月的 Moodle 事件
+                    LocalDate now = LocalDate.now();
+                    LocalDate monthStart = now.withDayOfMonth(1);
+                    LocalDate monthEnd = now.withDayOfMonth(now.lengthOfMonth());
+                    
+                    // 使用新線程避免阻塞UI
+                    new Thread(() -> {
+                        try {
+                            moodleService.forceSyncMoodleEvents(userEmail, monthStart, monthEnd);
+                            System.out.println("Moodle事件背景同步完成");
+                            
+                            // 在UI線程中重新載入當前日期的事件
+                            Platform.runLater(() -> {
+                                loadMoodleEvents(currentDate);
+                                updateMoodleStatus();
+                            });
+                        } catch (Exception e) {
+                            System.err.println("Moodle事件背景同步失敗: " + e.getMessage());
+                        }
+                    }).start();
+                } else {
+                    System.out.println("Moodle 事件緩存仍然有效，跳過同步");
+                    // 直接載入當前日期的事件
+                    Platform.runLater(() -> loadMoodleEvents(currentDate));
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("自動恢復Moodle登錄失敗: " + e.getMessage());
+        }
         
         setHostServices(MainApp.getHostServicesInstance());
         
         // 建立 ContextMenu
         addMenu = new ContextMenu();
-        addGoodleAPI = new MenuItem("新增Google行事曆");
-        addGoodleAPI.setOnAction(ev -> {
+        addGoogleAPI = new MenuItem("新增Google行事曆");
+        addMoodleAPI = new MenuItem("新增Moodle行事曆");
+        addGoogleAPI.setOnAction(ev -> {
             try {
                 if (googleCalendarService.isUserAuthorized()) {
                     Alert alert = new Alert(AlertType.INFORMATION);
@@ -111,10 +172,6 @@ public class DiaryController implements TodoChangeListener {
                         alert.setContentText("已成功連結Google行事曆！");
                         alert.showAndWait();
                     } else {
-                        // This else might be redundant if authorizeUser throws an exception on failure,
-                        // which would be caught by the outer catch block.
-                        // However, if authorizeUser can complete without authorizing (e.g., user closes browser),
-                        // this provides feedback.
                         Alert alert = new Alert(AlertType.WARNING);
                         alert.setTitle("Google行事曆");
                         alert.setHeaderText(null);
@@ -132,9 +189,15 @@ public class DiaryController implements TodoChangeListener {
             }
         });
         
-        addMenu.getItems().addAll(addGoodleAPI);
+        // 設置 Moodle API 按鈕事件處理
+        addMoodleAPI.setOnAction(ev -> {
+            showMoodleConfigDialog();
+        });
+        
+        addMenu.getItems().addAll(addGoogleAPI, addMoodleAPI);
 
         updateGoogleCalendarStatus();
+        updateMoodleStatus();
 
         addButton.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
@@ -145,7 +208,16 @@ public class DiaryController implements TodoChangeListener {
                 }
             }
         });
+        
+        // 延遲一點載入Moodle事件，讓自動恢復登錄有時間完成
+        Platform.runLater(() -> {
+            if (moodleService != null && moodleService.getWstoken() != null) {
+                loadMoodleEvents(currentDate);
+            }
+        });
     }
+
+    
 
     private void setupBlurEventHandlers() {
         // 為每個輸入欄位添加失焦事件處理器
@@ -342,6 +414,9 @@ public class DiaryController implements TodoChangeListener {
             // 載入 Google Calendar 事件到時間軸
             loadGoogleCalendarEvents(date);
             
+            // 載入 Moodle 事件
+            loadMoodleEvents(date);
+            
             // 載入 Habit Tracker 數據
             if (habitViewController != null) {
                 habitViewController.loadHabitData(date);
@@ -451,9 +526,89 @@ public class DiaryController implements TodoChangeListener {
         }
     }
 
+    /**
+     * 載入指定日期的 Moodle 事件
+     */
+    private void loadMoodleEvents(LocalDate date) {
+        try {
+            String userEmail = UserManager.getInstance().getCurrentUser().getEmail();
+            List<MoodleService.MoodleEvent> events = new ArrayList<>();
+            
+            // 如果 Moodle 已配置，嘗試從API載入
+            if (moodleService != null && moodleService.getWstoken() != null) {
+                events = moodleService.getCalendarEventsWithCache(date, userEmail);
+            } else {
+                // 即使沒有配置，也嘗試從本地資料庫載入已緩存的事件
+                if (moodleService != null) {
+                    List<MoodleModel> localEvents = moodleService.getLocalMoodleEvents(userEmail, date);
+                    if (!localEvents.isEmpty()) {
+                        // 轉換為 MoodleEvent
+                        for (MoodleModel model : localEvents) {
+                            MoodleService.MoodleEvent event = new MoodleService.MoodleEvent();
+                            event.setId(model.getId());
+                            event.setName(model.getName());
+                            event.setTimestart(model.getTimestart());
+                            event.setUrl(model.getUrl());
+                            event.setCourseName(model.getCourseName());
+                            event.setCourseId(model.getCourseId());
+                            event.setAssignmentId(model.getAssignmentId());
+                            event.setSubmissionStatus(model.getSubmissionStatus());
+                            events.add(event);
+                        }
+                        System.out.println("從本地資料庫載入 " + events.size() + " 個 Moodle 事件");
+                    }
+                }
+            }
+            
+            if (!events.isEmpty()) {
+                // 將 Moodle 事件添加到 All day 欄位
+                StringBuilder moodleEvents = new StringBuilder();
+                String currentAllDayText = priorityField.getText();
+                if (currentAllDayText != null && !currentAllDayText.trim().isEmpty()) {
+                    moodleEvents.append(currentAllDayText).append("; ");
+                }
+                
+                for (MoodleService.MoodleEvent event : events) {
+                    // 檢查事件是否在指定日期
+                    LocalDate eventDate = LocalDate.ofEpochDay(event.getTimestart() / 86400);
+                    if (eventDate.equals(date)) {
+                        if (moodleEvents.length() > 0 && !moodleEvents.toString().endsWith("; ")) {
+                            moodleEvents.append("; ");
+                        }
+                        
+                        // 添加事件信息，包含課程名稱和繳交狀態
+                        String eventText = String.format("[%s] %s", event.getCourseName(), event.getName());
+                        if (event.getSubmissionStatus() != null) {
+                            String statusText = "submitted".equals(event.getSubmissionStatus()) ? "✅" : "❌";
+                            eventText += " " + statusText;
+                        }
+                        moodleEvents.append(eventText);
+                        
+                        System.out.println("🎓 Moodle事件：" + eventText);
+                    }
+                }
+                
+                // 更新 All day 欄位
+                if (moodleEvents.length() > 0) {
+                    String finalText = moodleEvents.toString();
+                    if (finalText.endsWith("; ")) {
+                        finalText = finalText.substring(0, finalText.length() - 2);
+                    }
+                    priorityField.setText(finalText);
+                }
+                
+                System.out.println("DiaryController 已處理 " + events.size() + " 個 Moodle 事件");
+            }
+            
+        } catch (Exception e) {
+            System.err.println("載入 Moodle 事件時發生錯誤: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void updateGoogleCalendarStatus() {
         boolean isAuthorized = googleCalendarService.isUserAuthorized();
-        addGoodleAPI.setText(isAuthorized ? "已連結Google行事曆" : "新增Google行事曆");
+        addGoogleAPI.setText(isAuthorized ? "已連結Google行事曆" : "新增Google行事曆");
         
         // 如果已授權，啟動同步服務並載入當前日期的事件
         if (isAuthorized) {
@@ -464,11 +619,113 @@ public class DiaryController implements TodoChangeListener {
         }
     }
 
+    private void updateMoodleStatus() {
+        boolean isConfigured = isMoodleConfigured();
+        addMoodleAPI.setText(isConfigured ? "已連結Moodle" : "新增Moodle行事曆");
+    }
+
     public void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices;
     }
 
+    /**
+     * 顯示 Moodle 配置對話框
+     */
+    public void showMoodleConfigDialog() {
+        Optional<MoodleConfigDialog.MoodleCredentials> result = MoodleConfigDialog.showConfigDialog();
+        
+        if (result.isPresent()) {
+            MoodleConfigDialog.MoodleCredentials credentials = result.get();
+            
+            // 只支援用戶名/密碼登錄
+            if (!credentials.isUseToken()) {
+                String userEmail = UserManager.getInstance().getCurrentUser().getEmail();
+                final boolean success = configureMoodle(credentials.getUsername(), credentials.getPassword(), userEmail);
+                
+                // 顯示結果
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(success ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
+                    alert.setTitle("Moodle 配置");
+                    alert.setHeaderText(success ? "配置成功" : "配置失敗");
+                    alert.setContentText(success ? 
+                        "Moodle 已成功配置並且憑證已保存，下次啟動時會自動登錄。" : 
+                        "無法配置 Moodle，請檢查您的用戶名和密碼。");
+                    alert.showAndWait();
+                });
+                
+                // 如果成功，更新狀態
+                if (success) {
+                    updateMoodleStatus();
+                }
+            } else {
+                // 顯示錯誤訊息，不支援token登錄
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("配置錯誤");
+                    alert.setHeaderText("不支援的登錄方式");
+                    alert.setContentText("系統目前只支援用戶名/密碼登錄方式。");
+                    alert.showAndWait();
+                });
+            }
+        }
+    }
+
+    /**
+     * 配置 Moodle 登錄憑證
+     */
+    public boolean configureMoodle(String username, String password) {
+        return configureMoodle(username, password, null);
+    }
     
+    /**
+     * 配置 Moodle 登錄憑證（帶用戶郵箱）
+     */
+    public boolean configureMoodle(String username, String password, String userEmail) {
+        if (moodleService == null) {
+            moodleService = MoodleService.getInstance();
+        }
+        
+        try {
+            boolean success = moodleService.login(username, password, userEmail);
+            if (success) {
+                System.out.println("Moodle 登錄成功，憑證已保存");
+                
+                // 在背景同步當月的 Moodle 事件
+                LocalDate now = LocalDate.now();
+                LocalDate monthStart = now.withDayOfMonth(1);
+                LocalDate monthEnd = now.withDayOfMonth(now.lengthOfMonth());
+                
+                new Thread(() -> {
+                    try {
+                        moodleService.forceSyncMoodleEvents(userEmail, monthStart, monthEnd);
+                        System.out.println("Moodle事件初始同步完成");
+                        
+                        // 在UI線程中重新載入當前日期
+                        Platform.runLater(() -> loadDiaryContent(currentDate));
+                    } catch (Exception e) {
+                        System.err.println("Moodle事件初始同步失敗: " + e.getMessage());
+                    }
+                }).start();
+                
+                // 重新載入當前日期以顯示 Moodle 事件
+                loadDiaryContent(currentDate);
+                return true;
+            } else {
+                System.err.println("Moodle 登錄失敗");
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("Moodle 登錄時發生錯誤: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * 檢查 Moodle 是否已配置
+     */
+    public boolean isMoodleConfigured() {
+        return moodleService != null && moodleService.getWstoken() != null;
+    }
 }
 
    

@@ -77,7 +77,7 @@ public class TimeAxisPane extends Pane {
         }
         
         // 計算任務的Y位置
-        double startY = TimeUtil.toY(task.getStartTime(), paneHeight) + 8;
+        double startY = TimeUtil.toY(task.getStartTime(), paneHeight) - 8;
         
         // 計算任務的高度（基於持續時間）
         long durationMinutes = task.getDuration().toMinutes();
@@ -148,12 +148,12 @@ public class TimeAxisPane extends Pane {
                         .toLocalTime();
                 
                 // 計算位置和大小
-                double startY = TimeUtil.toY(startTime, height);
+                double startY = TimeUtil.toY(startTime, height) + 14;
                 double endY = TimeUtil.toY(endTime, height);
                 double eventHeight = Math.max(endY - startY, 20); // 最小高度20px
                 
                 // 繪製事件背景
-                gc.setFill(Color.web("#637a60", 0.8)); // Google藍色，半透明
+                gc.setFill(Color.web("#637a60", 0.8)); 
                 gc.fillRoundRect(35, startY, width - 45, eventHeight, 5, 5);
                 
                 // 繪製事件邊框
