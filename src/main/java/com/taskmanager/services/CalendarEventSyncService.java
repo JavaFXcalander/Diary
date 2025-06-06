@@ -215,18 +215,18 @@ public class CalendarEventSyncService {
                 while (!currentDate.isAfter(endDate)) {
                     // 為每一天生成唯一的 Google Event ID
                     String googleEventId = generateEventIdWithDate(googleEvent, currentDate);
-                    
-                    CalendarEventModel dbEvent = new CalendarEventModel(
-                        googleEventId,
-                        currentUserEmail,
-                        googleEvent.getSummary(),
-                        googleEvent.getDescription(),
-                        googleEvent.getStartTime(),
-                        googleEvent.getEndTime(),
+                
+                CalendarEventModel dbEvent = new CalendarEventModel(
+                    googleEventId,
+                    currentUserEmail,
+                    googleEvent.getSummary(),
+                    googleEvent.getDescription(),
+                    googleEvent.getStartTime(),
+                    googleEvent.getEndTime(),
                         currentDate
-                    );
-                    
-                    dbEvents.add(dbEvent);
+                );
+                
+                dbEvents.add(dbEvent);
                     currentDate = currentDate.plusDays(1);
                 }
                 

@@ -12,7 +12,10 @@ import com.taskmanager.models.ProjectModel;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.DayOfWeek;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.ArrayList;
 
 public class DiaryDatabase {
     // ORMLite
@@ -126,7 +129,7 @@ public class DiaryDatabase {
                 System.out.println("已更新用戶信息: " + entry.getEmail());
             } else {
                 // 如果用戶不存在，創建新用戶
-                userDao.create(entry);
+            userDao.create(entry);
                 System.out.println("已創建新用戶: " + entry.getEmail());
             }
         } catch (SQLException e) {
@@ -224,7 +227,56 @@ public class DiaryDatabase {
         }
     }
     
-    
+    /**
+     * 获取指定用户这一周的anynotes内容
+     * @param userEmail 用户邮箱
+     * @param currentDate 当前日期，用于确定本周范围
+     * @return 这一周的anynotes内容列表，按日期排序
+     */
+    public List<String> getWeeklyAnynotes(String userEmail, LocalDate currentDate) {
+        try {
+            List<String> weeklyAnynotes = new ArrayList<>();
+            
+            // 计算本周的开始日期（周一）和结束日期（周日）
+            LocalDate startOfWeek = currentDate.with(java.time.DayOfWeek.MONDAY);
+            LocalDate endOfWeek = startOfWeek.plusDays(6);
+            
+            // 获取所有日记条目
+            List<DiaryModel> allEntries = diaryDao.queryForAll();
+            
+            // 过滤出指定用户在本周的日记条目
+            for (DiaryModel entry : allEntries) {
+                if (entry.getDate() != null && entry.getUser() != null && 
+                    userEmail.equals(entry.getUser().getEmail())) {
+                    
+                    LocalDate entryDate = entry.getDate();
+                    if (!entryDate.isBefore(startOfWeek) && !entryDate.isAfter(endOfWeek)) {
+                        String anynotes = entry.getAnynotes();
+                        if (anynotes != null && !anynotes.trim().isEmpty()) {
+                            // 格式化：日期 + anynotes内容
+                            String formattedEntry = String.format("%s: %s", 
+                                entryDate.format(java.time.format.DateTimeFormatter.ofPattern("MM-dd")), 
+                                anynotes.trim());
+                            weeklyAnynotes.add(formattedEntry);
+                        }
+                    }
+                }
+            }
+            
+            // 按日期排序
+            weeklyAnynotes.sort((a, b) -> {
+                String dateA = a.split(":")[0];
+                String dateB = b.split(":")[0];
+                return dateA.compareTo(dateB);
+            });
+            
+            return weeklyAnynotes;
+            
+        } catch (SQLException e) {
+            System.err.println("获取周anynotes时发生错误: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
     
     
 }

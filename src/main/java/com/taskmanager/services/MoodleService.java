@@ -128,18 +128,18 @@ public class MoodleService {
      */
     private boolean isTokenValid() {
         try {
-            String url = String.format("%s?moodlewsrestformat=json&wsfunction=core_webservice_get_site_info&wstoken=%s",
-                    API_ENTRY, wstoken);
-            
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
+        String url = String.format("%s?moodlewsrestformat=json&wsfunction=core_webservice_get_site_info&wstoken=%s",
+                API_ENTRY, wstoken);
+        
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
                     .GET()
-                    .build();
-            
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            JsonObject result = JsonParser.parseString(response.body()).getAsJsonObject();
-            
-            return !result.has("errorcode");
+                .build();
+        
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        JsonObject result = JsonParser.parseString(response.body()).getAsJsonObject();
+        
+        return !result.has("errorcode");
         } catch (Exception e) {
             return false;
         }
@@ -706,7 +706,7 @@ public class MoodleService {
         
         public int getAssignmentId() { return assignmentId; }
         public void setAssignmentId(int assignmentId) { this.assignmentId = assignmentId; }
-                
+        
         public String getSubmissionStatus() { return submissionStatus; }
         public void setSubmissionStatus(String submissionStatus) { this.submissionStatus = submissionStatus; }
         
@@ -743,7 +743,7 @@ public class MoodleService {
          * 獲取狀態描述
          */
         public String getStatusDescription() {
-           
+            
             
             if ("submitted".equals(submissionStatus)) {
                 return "已繳交";

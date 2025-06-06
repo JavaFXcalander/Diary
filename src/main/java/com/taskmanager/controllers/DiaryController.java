@@ -462,7 +462,7 @@ public class DiaryController implements TodoChangeListener {
             StringBuilder allDayEvents = new StringBuilder();
             String currentAllDayText = priorityField.getText();
             if (currentAllDayText != null && !currentAllDayText.trim().isEmpty()) {
-                allDayEvents.append(currentAllDayText).append("; ");
+                allDayEvents.append(currentAllDayText).append("\n");
             }
             
             for (GoogleCalendarService.CalendarEvent event : events) {
@@ -482,8 +482,8 @@ public class DiaryController implements TodoChangeListener {
                 if (event.isAllDay()) {
                     // 整日事件加到 All day 欄位
                     System.out.println("✅ 整日事件：" + event.getSummary());
-                    if (allDayEvents.length() > 0 && !allDayEvents.toString().endsWith("; ")) {
-                        allDayEvents.append("; ");
+                    if (allDayEvents.length() > 0 && !allDayEvents.toString().endsWith("\n")) {
+                        allDayEvents.append("\n");
                     }
                     allDayEvents.append(event.getSummary());
                 } else {
@@ -499,7 +499,7 @@ public class DiaryController implements TodoChangeListener {
             // 更新整日行程欄位
             if (allDayEvents.length() > 0) {
                 String finalText = allDayEvents.toString();
-                if (finalText.endsWith("; ")) {
+                if (finalText.endsWith("\n")) {
                     finalText = finalText.substring(0, finalText.length() - 2);
                 }
                 priorityField.setText(finalText);
@@ -565,15 +565,15 @@ public class DiaryController implements TodoChangeListener {
                 StringBuilder moodleEvents = new StringBuilder();
                 String currentAllDayText = priorityField.getText();
                 if (currentAllDayText != null && !currentAllDayText.trim().isEmpty()) {
-                    moodleEvents.append(currentAllDayText).append("; ");
+                    moodleEvents.append(currentAllDayText).append("\n");
                 }
                 
                 for (MoodleService.MoodleEvent event : events) {
                     // 檢查事件是否在指定日期
                     LocalDate eventDate = LocalDate.ofEpochDay(event.getTimestart() / 86400);
                     if (eventDate.equals(date)) {
-                        if (moodleEvents.length() > 0 && !moodleEvents.toString().endsWith("; ")) {
-                            moodleEvents.append("; ");
+                        if (moodleEvents.length() > 0 && !moodleEvents.toString().endsWith("\n")) {
+                            moodleEvents.append("\n");
                         }
                         
                         // 添加事件信息，包含課程名稱和繳交狀態
@@ -591,7 +591,7 @@ public class DiaryController implements TodoChangeListener {
                 // 更新 All day 欄位
                 if (moodleEvents.length() > 0) {
                     String finalText = moodleEvents.toString();
-                    if (finalText.endsWith("; ")) {
+                    if (finalText.endsWith("\n")) {
                         finalText = finalText.substring(0, finalText.length() - 2);
                     }
                     priorityField.setText(finalText);

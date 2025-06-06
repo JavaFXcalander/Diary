@@ -39,6 +39,28 @@
     -fx-translate-y: 1px;
 }
 
+/* 漢堡選單按鈕樣式 */
+.hamburger-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #888;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 8;
+    -fx-background-radius: 5;
+    -fx-border-color: transparent;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+.hamburger-button:hover {
+    -fx-background-color: rgba(200, 220, 240, 0.3);
+    -fx-text-fill: #628fb5;
+}
+
+.hamburger-button:pressed {
+    -fx-background-color: rgba(200, 220, 240, 0.5);
+    -fx-translate-y: 1px;
+}
+
 /* 功能按鈕樣式 */
 .Diary-button {
     -fx-background-color: #d6ccc2;
@@ -73,7 +95,134 @@
     -fx-font-family: "Times New Roman", serif;
 }
 
+/* 側邊欄樣式 */
+.sidebar {
+    -fx-background-color: #f4f5f0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 1;
+}
 
+.sidebar-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #888;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+.close-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #999;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 6;
+    -fx-background-radius: 3;
+    -fx-border-color: transparent;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+.close-button:hover {
+    -fx-background-color: #f4f5f0;
+    -fx-text-fill: #666;
+}
+
+.close-button:pressed {
+    -fx-background-color: #f4f5f0;
+}
+
+
+
+
+/* 聊天界面樣式 */
+.chat-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: #f4f5f0;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.chat-container {
+    -fx-background-color: #f4f5f0 !important; 
+}
+
+.message-input {
+    -fx-background-color: #f4f5f0;
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-size: 12px;
+    -fx-font-family: "Times New Roman", serif;
+    -fx-padding: 8;
+}
+
+.message-input:focused {
+    -fx-border-color: #628fb5;
+    -fx-border-width: 2;
+}
+
+.send-button {
+    -fx-background-color: #628fb5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 6 12;
+    -fx-font-size: 12px;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+.send-button:hover {
+    -fx-background-color: #4a7da8;
+}
+
+.send-button:pressed {
+    -fx-background-color: #3a6d98;
+}
+
+.chat-action-button {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 6 12;
+    -fx-font-size: 12px;
+    -fx-font-family: "Times New Roman", serif;
+}
+
+.chat-action-button:hover {
+    -fx-background-color: #5a6268;
+}
+
+.chat-action-button:pressed {
+    -fx-background-color: #545b62;
+}
+
+.user-message {
+    -fx-background-color: #628fb5;
+    -fx-text-fill: white;
+    -fx-background-radius: 15 15 5 15;
+    -fx-padding: 8 12;
+    -fx-font-size: 12px;
+    -fx-font-family: "Times New Roman", serif;
+    -fx-max-width: 180;
+    -fx-wrap-text: true;
+}
+
+.ai-message {
+    -fx-background-color: #545b62;
+    -fx-text-fill: white;
+    -fx-background-radius: 15 15 15 5;
+    -fx-padding: 8 12;
+    -fx-font-size: 12px;
+    -fx-font-family: "Times New Roman", serif;
+    -fx-max-width: 180;
+    -fx-wrap-text: true;
+}
+
+.message-container {
+    -fx-background-color: transparent;
+    -fx-padding: 2 0;
+}
 
 /* 日曆網格樣式 */
 .calendar-grid {

@@ -6,67 +6,131 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.paint.Color?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="com.taskmanager.controllers.CalendarController"
+<StackPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="com.taskmanager.controllers.CalendarController"
             stylesheets="@../css/styles.css">
     
-    <!-- Top: Title and Navigation -->
-    <top>
-        <VBox spacing="10" alignment="CENTER">
-            <padding>
-                <Insets top="15" right="10" bottom="10" left="10" />
-            </padding>
-            <Label text="Calendar" styleClass="title-label" />
-            <HBox spacing="40" alignment="CENTER">
-                <Button fx:id="previousButton" text="Previous" styleClass="nav-button" />
-                <Label fx:id="monthYearLabel" text="May 2025" styleClass="month-year-label" />
-                <Button fx:id="nextButton" text="Next" styleClass="nav-button" />
-            </HBox>
-        </VBox>
+    <!-- Main Calendar Content -->
+    <BorderPane fx:id="mainContent">
         
-    </top>
-
-    <!-- Center: Calendar Grid -->
-    <center>
-        <VBox spacing="5">
-            <!-- Calendar Grid -->
-            <GridPane fx:id="calendarGrid" hgap="5" vgap="5" styleClass="calendar-grid">
+        <!-- Top: Title and Navigation with Hamburger Menu -->
+        <top>
+            <VBox spacing="10" alignment="CENTER">
                 <padding>
-                    <Insets top="10" right="10" bottom="10" left="10" />
+                    <Insets top="15" right="10" bottom="10" left="10" />
                 </padding>
-                <!-- Java 會用程式填滿這個 GridPane -->
-            </GridPane>
+                
+                <!-- Header with hamburger menu in top-right -->
+                <StackPane>
+                    <Label text="Calendar" styleClass="title-label" StackPane.alignment="CENTER" />
+                    <VBox StackPane.alignment="CENTER_RIGHT" alignment="TOP_RIGHT">
+                        <Button fx:id="hamburgerButton" text="☰" styleClass="hamburger-button" 
+                                onAction="#toggleSidebar" />
+                    </VBox>
+                </StackPane>
+                
+                <HBox spacing="40" alignment="CENTER">
+                    <Button fx:id="previousButton" text="Previous" styleClass="nav-button" />
+                    <Label fx:id="monthYearLabel" text="May 2025" styleClass="month-year-label" />
+                    <Button fx:id="nextButton" text="Next" styleClass="nav-button" />
+                </HBox>
+            </VBox>
+        </top>
+
+        <!-- Center: Calendar Grid -->
+        <center>
+            <VBox spacing="5">
+                <!-- Calendar Grid -->
+                <GridPane fx:id="calendarGrid" hgap="5" vgap="5" styleClass="calendar-grid">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10" />
+                    </padding>
+                    <!-- Java 會用程式填滿這個 GridPane -->
+                </GridPane>
+            </VBox>
+        </center>
+
+        <!-- Bottom: Navigation and Footer -->
+        <bottom>
+            <VBox spacing="5">
+                <HBox spacing="15" alignment="CENTER">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10" />
+                    </padding>
+                    <Button text="Diary" styleClass="Diary-button" onAction="#handleDiaryButton"/>
+                    <Button text="Month" styleClass="Month-button"/>
+                    <Button text="Project" styleClass="Project-button" onAction="#handleProjectButton"/>
+                </HBox>
+                <HBox spacing="5" alignment="CENTER">
+                    <padding>
+                        <Insets bottom="10" />
+                    </padding>
+                    <Label text="1" styleClass="number-label" />
+                    <Label text="2" styleClass="number-label" />
+                    <Label text="3" styleClass="number-label" />
+                    <Label text="4" styleClass="number-label" />
+                    <Label text="5" styleClass="number-label" />
+                    <Label text="6" styleClass="number-label" />
+                    <Label text="7" styleClass="number-label" />
+                    <Label text="8" styleClass="number-label" />
+                    <Label text="9" styleClass="number-label" />
+                    <Label text="10" styleClass="number-label" />
+                    <Label text="11" styleClass="number-label" />
+                    <Label text="12" styleClass="number-label" />
+                </HBox>
+            </VBox>
+        </bottom>
+
+    </BorderPane>
+    
+    <!-- Sidebar -->
+    <VBox fx:id="sidebar" styleClass="sidebar" prefWidth="300" maxWidth="300" 
+          translateX="300" visible="false" StackPane.alignment="CENTER_RIGHT">
+        <padding>
+            <Insets top="20" right="15" bottom="20" left="15" />
+        </padding>
+        
+        <!-- Sidebar Header -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label text="情緒樹洞" styleClass="sidebar-title" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="closeSidebarButton" text="☰" styleClass="close-button" 
+                    onAction="#toggleSidebar" />
+        </HBox>
+        
+        <Separator />
+        
+        <!-- Sidebar Content -->
+        <VBox spacing="10" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets top="20" />
+            </padding>
+            
+            <!-- Chat History Area -->
+            <ScrollPane fx:id="chatScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS" 
+                        prefHeight="700" maxHeight="700" styleClass="chat-scroll-pane">
+                <VBox fx:id="chatContainer" prefHeight="500" maxHeight="500" styleClass="chat-container">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10" />
+                    </padding>
+                </VBox>
+            </ScrollPane>
+            
+            <!-- Message Input Area -->
+            <VBox spacing="5">
+                <TextArea fx:id="messageInput" promptText="請輸入訊息..." 
+                          wrapText="true" prefRowCount="2" maxHeight="60" 
+                          styleClass="message-input" />
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button fx:id="clearChatButton" text="清除記錄" styleClass="chat-action-button" 
+                            onAction="#clearChat" />
+                    <Button fx:id="sendMessageButton" text="發送" styleClass="send-button" 
+                            onAction="#sendMessage" />
+                </HBox>
+            </VBox>
+            
+            
+           
         </VBox>
-    </center>
-
-    <!-- Bottom: Navigation and Footer -->
-    <bottom>
-        <VBox spacing="5">
-            <HBox spacing="15" alignment="CENTER">
-                <padding>
-                    <Insets top="10" right="10" bottom="10" left="10" />
-                </padding>
-                <Button text="Diary" styleClass="Diary-button" onAction="#handleDiaryButton"/>
-                <Button text="Month" styleClass="Month-button"/>
-                <Button text="Project" styleClass="Project-button" onAction="#handleProjectButton"/>
-            </HBox>
-            <HBox spacing="5" alignment="CENTER">
-                <padding>
-                    <Insets bottom="10" />
-                </padding>
-                <Label text="1" styleClass="number-label" />
-                <Label text="2" styleClass="number-label" />
-                <Label text="3" styleClass="number-label" />
-                <Label text="4" styleClass="number-label" />
-                <Label text="5" styleClass="number-label" />
-                <Label text="6" styleClass="number-label" />
-                <Label text="7" styleClass="number-label" />
-                <Label text="8" styleClass="number-label" />
-                <Label text="9" styleClass="number-label" />
-                <Label text="10" styleClass="number-label" />
-                <Label text="11" styleClass="number-label" />
-                <Label text="12" styleClass="number-label" />
-            </HBox>
-        </VBox>
-    </bottom>
-
-</BorderPane>
+    </VBox>
+    
+</StackPane>

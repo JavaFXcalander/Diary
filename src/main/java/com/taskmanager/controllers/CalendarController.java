@@ -10,23 +10,38 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.animation.TranslateTransition;
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
 import java.io.IOException;
 import com.taskmanager.services.GoogleCalendarService;
 import com.taskmanager.services.CalendarEventSyncService;
 import com.taskmanager.services.UserManager;
 import com.taskmanager.services.MoodleService;
+import com.taskmanager.services.OllamaService;
 import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Insets;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import com.taskmanager.database.DiaryDatabase;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
 
 public class CalendarController {
 
@@ -42,10 +57,60 @@ public class CalendarController {
     @FXML
     private Button nextButton;
     
+    // Sidebar elements
+    @FXML
+    private Button hamburgerButton;
+    
+    @FXML
+    private VBox sidebar;
+    
+    @FXML
+    private BorderPane mainContent;
+    
+    @FXML
+    private Button closeSidebarButton;
+    
+    @FXML
+    private CheckBox googleCalendarCheckBox;
+    
+    @FXML
+    private CheckBox moodleCheckBox;
+    
+    @FXML
+    private Label syncStatusLabel;
+    
+    @FXML
+    private TextArea chatTextArea;
+    
+    @FXML
+    private ScrollPane chatScrollPane;
+    
+    @FXML
+    private HBox chatInputBox;
+    
+    // Chat interface elements
+    @FXML
+    private TextArea messageInput;
+    
+    @FXML
+    private VBox chatContainer;
+    
+    @FXML
+    private Button sendMessageButton;
+    
+    @FXML
+    private Button clearChatButton;
+    
+    @FXML
+    private Label modelStatusLabel;
+    
     private LocalDate currentDate;
     private GoogleCalendarService googleCalendarService;
     private CalendarEventSyncService syncService;
     private MoodleService moodleService;
+    private OllamaService ollamaService;
+    
+    private boolean sidebarOpen = false;
     
     public void initialize() {
         // 初始化為當前日期
@@ -60,6 +125,9 @@ public class CalendarController {
             
             // 初始化 Moodle 服務
             moodleService = MoodleService.getInstance();
+            
+            // 初始化 Ollama 服務
+            ollamaService = OllamaService.getInstance();
             
             // 嘗試自動恢復 Moodle 登錄狀態
             try {
@@ -99,6 +167,9 @@ public class CalendarController {
         
         // 初始顯示日曆
         updateCalendar();
+        
+        // 初始化聊天界面
+        initializeChatInterface();
     }
     
     private void setupButtonEffects() {
@@ -148,6 +219,9 @@ public class CalendarController {
             int year = currentDate.getYear();
             monthYearLabel.setText(month + " " + year);
         }
+        
+        // 重新載入這一週的anynotes數據（當用戶切換月份時）
+        loadWeeklyAnynotesToOllama();
         
         // 添加星期標題 (0行) - 使用英文格式
         for (int i = 0; i < 7; i++) {
@@ -402,4 +476,311 @@ public class CalendarController {
         return moodleService != null && moodleService.getWstoken() != null;
     }
 
+    /**
+     * 切換側邊欄的顯示/隱藏
+     */
+    @FXML
+    private void toggleSidebar() {
+        if (sidebarOpen) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
+    
+    /**
+     * 打開側邊欄
+     */
+    private void openSidebar() {
+        sidebar.setVisible(true);
+        
+        // 滑動動畫
+        TranslateTransition slideIn = new TranslateTransition(Duration.millis(300), sidebar);
+        slideIn.setFromX(250);
+        slideIn.setToX(0);
+        
+        // 淡入動畫
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), sidebar);
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+        
+        slideIn.play();
+        fadeIn.play();
+        
+        sidebarOpen = true;
+        
+        // 更新同步狀態
+        updateSyncStatus();
+        
+        // 更新模型狀態
+        updateModelStatus();
+    }
+    
+    /**
+     * 關閉側邊欄
+     */
+    private void closeSidebar() {
+        // 滑動動畫
+        TranslateTransition slideOut = new TranslateTransition(Duration.millis(300), sidebar);
+        slideOut.setFromX(0);
+        slideOut.setToX(250);
+        
+        // 淡出動畫
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), sidebar);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+        
+        slideOut.setOnFinished(e -> sidebar.setVisible(false));
+        
+        slideOut.play();
+        fadeOut.play();
+        
+        sidebarOpen = false;
+    }
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * 更新同步狀態顯示
+     */
+    private void updateSyncStatus() {
+        try {
+            String status = "Last sync: Never";
+            if (syncService != null) {
+                status = syncService.getSyncStatus();
+            }
+            
+            if (syncStatusLabel != null) {
+                syncStatusLabel.setText(status);
+            }
+        } catch (Exception e) {
+            System.err.println("更新同步狀態時發生錯誤: " + e.getMessage());
+        }
+    }
+    
+    // ===== 聊天功能方法 =====
+    
+    /**
+     * 發送消息給AI
+     */
+    @FXML
+    private void sendMessage() {
+        if (messageInput == null || messageInput.getText().trim().isEmpty()) {
+            return;
+        }
+        
+        String userMessage = messageInput.getText().trim();
+        messageInput.clear();
+        
+        // 添加用戶消息到聊天界面
+        addMessageToChat(userMessage, true);
+        
+        // 檢查Ollama服務狀態
+        if (!ollamaService.isAvailable()) {
+            addMessageToChat("❌ Ollama服務未運行，請確保Ollama已啟動並運行在localhost:11434", false);
+            return;
+        }
+        
+        if (!ollamaService.isModelAvailable()) {
+            addMessageToChat("❌ llama3.2模型未安裝，請運行: ollama pull llama3.2", false);
+            return;
+        }
+        
+        // 創建動態"正在思考"標籤
+        Label thinkingLabel = new Label(".");
+        thinkingLabel.getStyleClass().add("ai-message");
+        HBox thinkingContainer = new HBox(thinkingLabel);
+        thinkingContainer.setAlignment(Pos.CENTER_LEFT);
+        thinkingContainer.getStyleClass().add("message-container");
+        chatContainer.getChildren().add(thinkingContainer);
+        
+        // 滾動到底部
+        Platform.runLater(() -> {
+            chatScrollPane.setVvalue(1.0);
+        });
+        
+        // 創建動態點數效果的Timeline
+        final int[] dots = {1}; // 使用陣列來允許在lambda中修改
+        javafx.animation.Timeline timeline = new javafx.animation.Timeline(
+            new javafx.animation.KeyFrame(
+                Duration.millis(500),
+                e -> {
+                    dots[0] = (dots[0] % 3) + 1;
+                    StringBuilder dotText = new StringBuilder();
+                    for (int i = 0; i < dots[0]; i++) {
+                        dotText.append(".");
+                    }
+                    thinkingLabel.setText(dotText.toString());
+                }
+            )
+        );
+        timeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
+        timeline.play();
+        
+        // 異步發送消息給AI
+        Task<String> sendTask = ollamaService.sendMessageAsync(userMessage);
+        
+        sendTask.setOnSucceeded(e -> {
+            Platform.runLater(() -> {
+                // 停止動畫並移除"正在思考"
+                timeline.stop();
+                chatContainer.getChildren().remove(thinkingContainer);
+                
+                // 添加AI回應
+                String aiResponse = sendTask.getValue();
+                addMessageToChat(aiResponse, false);
+            });
+        });
+        
+        sendTask.setOnFailed(e -> {
+            Platform.runLater(() -> {
+                // 停止動畫並移除"正在思考"
+                timeline.stop();
+                chatContainer.getChildren().remove(thinkingContainer);
+                
+                // 顯示錯誤消息
+                Throwable exception = sendTask.getException();
+                String errorMessage = "❌ 發送消息失敗: " + 
+                    (exception != null ? exception.getMessage() : "未知錯誤");
+                addMessageToChat(errorMessage, false);
+            });
+        });
+        
+        // 在新線程中執行
+        new Thread(sendTask).start();
+    }
+    
+    /**
+     * 清除聊天記錄
+     */
+    @FXML
+    private void clearChat() {
+        if (chatContainer != null) {
+            chatContainer.getChildren().clear();
+            ollamaService.clearHistory();
+            
+            // 重新加載週anynotes數據
+            loadWeeklyAnynotesToOllama();
+            
+            // 添加歡迎消息
+            addMessageToChat("有什麼想聊的嗎？", false);
+        }
+    }
+    
+    /**
+     * 添加消息到聊天界面
+     */
+    private void addMessageToChat(String message, boolean isUser) {
+        if (chatContainer == null) return;
+        
+        Label messageLabel = new Label(message);
+        messageLabel.setWrapText(true);
+        messageLabel.getStyleClass().add(isUser ? "user-message" : "ai-message");
+        
+        HBox messageContainer = new HBox(messageLabel);
+        messageContainer.setAlignment(isUser ? Pos.CENTER_RIGHT : Pos.CENTER_LEFT);
+        messageContainer.getStyleClass().add("message-container");
+        
+        Platform.runLater(() -> {
+            chatContainer.getChildren().add(messageContainer);
+            
+            // 滾動到底部
+            chatScrollPane.setVvalue(1.0);
+        });
+    }
+    
+    /**
+     * 更新模型狀態
+     */
+    private void updateModelStatus() {
+        if (modelStatusLabel != null && ollamaService != null) {
+            Platform.runLater(() -> {
+                String status = ollamaService.getModelStatus();
+                modelStatusLabel.setText(status);
+            });
+        }
+    }
+    
+    /**
+     * 初始化聊天界面
+     */
+    private void initializeChatInterface() {
+        // 清除舊的對話歷史
+        if (ollamaService != null) {
+            ollamaService.clearHistory();
+            ollamaService.clearWeeklyAnynotes();
+        }
+        
+        // 設置Enter鍵發送消息
+        if (messageInput != null) {
+            messageInput.setOnKeyPressed(event -> {
+                if (event.getCode().toString().equals("ENTER") && !event.isShiftDown()) {
+                    event.consume();
+                    sendMessage();
+                }
+            });
+        }
+        
+        // 加載這一週的anynotes數據
+        loadWeeklyAnynotesToOllama();
+        
+        // 檢查並更新模型狀態
+        Task<Void> statusTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                updateModelStatus();
+                return null;
+            }
+        };
+        new Thread(statusTask).start();
+        
+        // 添加歡迎消息
+        Platform.runLater(() -> {
+            addMessageToChat("有什麼想聊的嗎？", false);
+        });
+    }
+    
+    /**
+     * 載入這一週的anynotes數據到Ollama服務
+     */
+    private void loadWeeklyAnynotesToOllama() {
+        try {
+            if (ollamaService != null) {
+                // 先清除舊的週數據
+                ollamaService.clearWeeklyAnynotes();
+                
+                String userEmail = UserManager.getInstance().getCurrentUser().getEmail();
+                DiaryDatabase diaryDatabase = DiaryDatabase.getInstance();
+                
+                // 獲取這一週的anynotes數據
+                List<String> weeklyAnynotes = diaryDatabase.getWeeklyAnynotes(userEmail, LocalDate.now());
+                
+                // 設置到Ollama服務
+                ollamaService.setWeeklyAnynotes(weeklyAnynotes);
+                
+                System.out.println("已載入 " + weeklyAnynotes.size() + " 條本週anynotes記錄到AI助手");
+                
+                // 調試：打印加載的數據
+                if (!weeklyAnynotes.isEmpty()) {
+                    System.out.println("本週anynotes內容：");
+                    for (String note : weeklyAnynotes) {
+                        System.out.println("  - " + note);
+                    }
+                } else {
+                    System.out.println("本週沒有anynotes記錄");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("載入週anynotes數據時發生錯誤: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

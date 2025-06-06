@@ -129,7 +129,7 @@ public class CalendarEventDatabase {
                         .eq("userEmail", event.getUserEmail())
                         .countOf();
                 
-                saveOrUpdateEvent(event);
+            saveOrUpdateEvent(event);
                 
                 // 檢查是否是新建還是更新
                 if (beforeCount == 0) {

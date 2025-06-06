@@ -16,7 +16,7 @@ public class UserModel {
 
     @DatabaseField
     private String hashedPassword;
-    
+
     // Moodle 憑證字段
     @DatabaseField
     private String moodleToken;
